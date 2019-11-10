@@ -893,12 +893,12 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=rm_template_gimbal\startup_stm32f427xx.d -orm_template_gimbal\s
-tartup_stm32f427xx.o -I..\\Inc -IC:\Users\pc\Desktop\ÔÆÌ¨Ä£°å³ÌÐò\³õÆÚÐÞ¸Ä°æ10Ô
-Â11\RM_Template_Gimbal\MDK-ARM\RTE -ID:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSI
-S\Include -ID:\Users\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers\CMSIS\Device
-\ST\STM32F4xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VE
-RSION SETA 521" --predefine="_RTE_ SETA 1" --predefine="STM32F427xx SETA 1" --l
-ist=startup_stm32f427xx.lst startup_stm32f427xx.s
+tartup_stm32f427xx.o -I..\\Inc -IE:\Git¿â_È«²¿³ÌÐò\infantry\RM_Template_Gimbal\
+MDK-ARM\RTE -ID:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -ID:\Users\MD
+K\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include -
+-predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 521" --prede
+fine="_RTE_ SETA 1" --predefine="STM32F427xx SETA 1" --list=startup_stm32f427xx
+.lst startup_stm32f427xx.s
 
 
 
