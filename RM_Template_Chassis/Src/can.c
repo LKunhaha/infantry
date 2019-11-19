@@ -194,7 +194,32 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-
+void CanFilter_Init(CAN_HandleTypeDef* hcan)
+{
+  CAN_FilterTypeDef canfilter;
+  
+  canfilter.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfilter.FilterScale = CAN_FILTERSCALE_32BIT;
+  canfilter.FilterIdHigh = 0x0000;
+  canfilter.FilterIdLow = 0x0000;
+  canfilter.FilterMaskIdHigh = 0x0000;
+  canfilter.FilterMaskIdLow = 0x0000;
+  canfilter.FilterFIFOAssignment = CAN_FilterFIFO0;
+  canfilter.FilterActivation = ENABLE;
+  canfilter.SlaveStartFilterBank = 14;
+  
+  //use different filter for can1&can2
+  if(hcan == &hcan1)
+  {
+    canfilter.FilterBank = 0;
+  }
+  if(hcan == &hcan2)
+  {
+    canfilter.FilterBank = 14;
+  }
+  
+  HAL_CAN_ConfigFilter(hcan, &canfilter);
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

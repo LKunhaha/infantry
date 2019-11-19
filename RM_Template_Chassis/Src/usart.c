@@ -19,7 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-
+#include "stdio.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -27,9 +27,29 @@
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
-UART_HandleTypeDef huart6;
+UART_HandleTypeDef huart6;        //可能用于复用为PWM功能
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
+
+
+/*
+********************************
+*Descriptions：
+*				重定向c库的printf函数
+*			到串口３的发送函数
+********************************
+*/
+
+#ifdef __GNUC__ /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf set to 'Yes') calls __io_putchar() */ 
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch) 
+#else 
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f) 
+#endif /* __GNUC__ */ /** * @brief Retargets the C library printf function to the USART. * @param None * @retval None */ 
+PUTCHAR_PROTOTYPE { 
+//while(HAL_UART_GetState(&huart3) == HAL_UART_STATE_BUSY_TX){}
+HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 10); 
+return ch; }//串口调试必须
+
 
 /* USART1 init function */
 
@@ -90,7 +110,7 @@ void MX_USART3_UART_Init(void)
 }
 /* USART6 init function */
 
-void MX_USART6_UART_Init(void)
+void MX_USART6_UART_Init(void)    //可能用于复用为PWM功能
 {
 
   huart6.Instance = USART6;

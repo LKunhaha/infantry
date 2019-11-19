@@ -13,6 +13,10 @@ rm_template_chassis\stm32f4xx_it.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
+rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
+rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\string.h
+rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\math.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
 rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\stddef.h
@@ -34,6 +38,7 @@ rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4x
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 rm_template_chassis\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+rm_template_chassis\stm32f4xx_it.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\stdio.h
 rm_template_chassis\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
 rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 rm_template_chassis\stm32f4xx_it.o: ../Inc/FreeRTOSConfig.h
@@ -49,3 +54,7 @@ rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/i
 rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+rm_template_chassis\stm32f4xx_it.o: .\Algorithm\SystemState.h
+rm_template_chassis\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+rm_template_chassis\stm32f4xx_it.o: .\Motor_driver\Motor_USE_CAN.h
+rm_template_chassis\stm32f4xx_it.o: ../Inc/can.h

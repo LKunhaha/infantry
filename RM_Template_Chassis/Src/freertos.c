@@ -23,7 +23,10 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-
+#include "chassis_control.h"
+#include "data_processing.h"
+#include "offline_check.h"
+#include "other_tasks.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -47,16 +50,30 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 osThreadId defaultTaskHandle;
+osThreadId testTaskHandle; 				
+osThreadId RemoteDataTaskHandle;  
+osThreadId RefereeDataTaskHandle;				
+osThreadId MiniPCDataTaskHandle;
+osThreadId LedTaskHandle;
+osThreadId vOutLineCheckTaskHandle;
+osThreadId CheckTaskHandle;
 /* USER CODE END Variables */
-osThreadId defaultTaskHandle;
+
 
 int test_count = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-void StartDefaultTask(void const * argument);   
+void StartDefaultTask(void const * argument); 
+extern void testTask(void const * argument);
+extern void Remote_Data_Task(void const * argument);
+extern void Referee_Data_Task(void const * argument);
+extern void MiniPC_Data_task(void const * argument);
+extern void Led_Task(void const * argument);
+extern void vOutLineCheck_Task(void const *argument);
+extern void Check_Task(void const *argument);
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
+
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -104,11 +121,30 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+//  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+//  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+	osThreadDef(Task1, testTask, osPriorityNormal, 0, 256);                         //测试任务，内容自定
+	testTaskHandle = osThreadCreate(osThread(Task1), NULL);
+
+	osThreadDef(RemoteDataTask, Remote_Data_Task, osPriorityHigh, 0, 256);          //遥控器数据处理
+	RemoteDataTaskHandle = osThreadCreate(osThread(RemoteDataTask), NULL);
+
+	osThreadDef(MiniPCDataTask, MiniPC_Data_task, osPriorityAboveNormal, 0, 128);   //视觉数据处理
+	MiniPCDataTaskHandle = osThreadCreate(osThread(MiniPCDataTask), NULL);
+
+
+  /***********断线检测**************/
+	osThreadDef(LedTask, Led_Task, osPriorityAboveNormal, 0, 256);                  //根据模块断线标志进行亮灯处理
+	LedTaskHandle = osThreadCreate(osThread(LedTask), NULL);
+	
+	osThreadDef(CheckTask, Check_Task, osPriorityNormal, 0, 128);                   //根据任务断线标志进行处理
+	CheckTaskHandle = osThreadCreate(osThread(CheckTask), NULL);
+	
+	osThreadDef(vOutLineCheckTask, vOutLineCheck_Task, osPriorityNormal, 0, 128);   //其他任务断线检测、模块（电机、遥控器等）掉线检测及设置断线标志
+	vOutLineCheckTaskHandle = osThreadCreate(osThread(vOutLineCheckTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -130,12 +166,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_15,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOF,GPIO_PIN_12,GPIO_PIN_RESET);
-		test_count++;
-    osDelay(100);
+
+    osDelay(1000);
   }
   /* USER CODE END 5 */ 
 }     

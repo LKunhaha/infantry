@@ -24,13 +24,18 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
+#include "SystemState.h"
+#include "Motor_USE_CAN.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+CAN_RxHeaderTypeDef  CAN1_Rx_Header;
+CAN_RxHeaderTypeDef  CAN2_Rx_Header;
+uint8_t CAN1_RX_date[8];
+uint8_t CAN2_RX_date[8];
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -325,6 +330,95 @@ void CAN2_RX0_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) 
+	{
+    HAL_IncTick();
+  }else if(htim->Instance == TIM3)  //1ms的定时周期
+	{
+		RefreshSysTime();
+	}else if(htim->Instance == TIM4)  //1ms的定时周期
+	{
+		
+	}else if(htim->Instance == TIM13) //1ms的定时周期
+	{
+		
+	}
+
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+	if(hcan == &hcan1)
+	{
+		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN1_Rx_Header, CAN1_RX_date);
+		
+	}else if(hcan == &hcan2)
+	{
+		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN2_Rx_Header, CAN2_RX_date);
+		
+		switch(CAN2_Rx_Header.StdId)
+		{
+			case CAN_3508Moto1_ID:     
+			{
+					if(moto_chassis_get[0].msg_cnt++ <= 50)	
+					{
+						 get_moto_offset(&moto_chassis_get[0], CAN2_RX_date);
+					}else
+					{		
+						 moto_chassis_get[0].msg_cnt = 51;	
+						 get_moto_measure_3508(&moto_chassis_get[0], CAN2_RX_date);
+						 RefreshDeviceOutLineTime(Motor1_NO);
+					}
+			}break;
+			
+			case CAN_3508Moto2_ID:     
+			{
+					if(moto_chassis_get[1].msg_cnt++ <= 50)	
+					{
+						 get_moto_offset(&moto_chassis_get[1], CAN2_RX_date);
+					}else
+					{		
+						 moto_chassis_get[1].msg_cnt = 51;	
+						 get_moto_measure_3508(&moto_chassis_get[1], CAN2_RX_date);
+						 RefreshDeviceOutLineTime(Motor2_NO);
+				  }
+			}break;
+			
+			case CAN_3508Moto3_ID:    
+			{		
+					if(moto_chassis_get[2].msg_cnt++ <= 50)	
+					{
+						 get_moto_offset(&moto_chassis_get[2], CAN2_RX_date);
+					}else
+					{		
+						 moto_chassis_get[2].msg_cnt = 51;	
+						 get_moto_measure_3508(&moto_chassis_get[2], CAN2_RX_date);
+						 RefreshDeviceOutLineTime(Motor3_NO);
+					}
+			}break;
+			
+			case CAN_3508Moto4_ID:    
+			{			
+					if(moto_chassis_get[3].msg_cnt++ <= 50)	
+					{
+						 get_moto_offset(&moto_chassis_get[3], CAN2_RX_date);
+					}else
+					{		
+						 moto_chassis_get[3].msg_cnt = 51;	
+						 get_moto_measure_3508(&moto_chassis_get[3], CAN2_RX_date);
+						 RefreshDeviceOutLineTime(Motor4_NO);
+					}
+			}break;
+			
+		}
+		
+	}
+}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

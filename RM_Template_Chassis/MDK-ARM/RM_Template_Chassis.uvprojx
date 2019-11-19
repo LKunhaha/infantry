@@ -333,9 +333,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F407xx,USE_HAL_DRIVER,STM32F407xx</Define>
+              <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__FPU_PRESENT=1</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;  ../Drivers/STM32F4xx_HAL_Driver/Inc;  ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;  ../Middlewares/Third_Party/FreeRTOS/Source/include;  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;  ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;  ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;.\Algorithm;.\App_task_Module;.\Communication;.\Motor_driver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -443,6 +443,11 @@
               <FileName>stm32f4xx_hal_timebase_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f4xx_hal_timebase_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>BSP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\BSP.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -608,6 +613,111 @@
               <FileName>port.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/port.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Motor_driver</GroupName>
+          <Files>
+            <File>
+              <FileName>AX-12A.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Motor_driver\AX-12A.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_USE_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Motor_driver\Motor_USE_CAN.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_USE_TIM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Motor_driver\Motor_USE_TIM.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Algorithm_Moudule</GroupName>
+          <Files>
+            <File>
+              <FileName>Caloric_restriction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\Caloric_restriction.c</FilePath>
+            </File>
+            <File>
+              <FileName>mecanum_calc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\mecanum_calc.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>Power_restriction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\Power_restriction.c</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\protocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>SystemState.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\SystemState.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Algorithm\user_lib.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Communication_Module</GroupName>
+          <Files>
+            <File>
+              <FileName>communication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Communication\communication.c</FilePath>
+            </File>
+            <File>
+              <FileName>minipc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Communication\minipc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>App_task_Module</GroupName>
+          <Files>
+            <File>
+              <FileName>chassis_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App_task_Module\chassis_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>data_processing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App_task_Module\data_processing.c</FilePath>
+            </File>
+            <File>
+              <FileName>gimbal_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App_task_Module\gimbal_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>offline_check.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App_task_Module\offline_check.c</FilePath>
+            </File>
+            <File>
+              <FileName>other_tasks.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App_task_Module\other_tasks.c</FilePath>
             </File>
           </Files>
         </Group>
