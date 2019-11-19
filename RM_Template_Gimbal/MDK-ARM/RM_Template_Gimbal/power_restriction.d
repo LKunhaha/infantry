@@ -67,6 +67,7 @@ rm_template_gimbal\power_restriction.o: .\App_task_Module\gun_control.h
 rm_template_gimbal\power_restriction.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\power_restriction.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\power_restriction.o: ../Inc/can.h
+rm_template_gimbal\power_restriction.o: .\Communication\communication.h
 rm_template_gimbal\power_restriction.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\power_restriction.o: ../Inc/tim.h
 rm_template_gimbal\power_restriction.o: .\App_task_Module\gimbal_control.h
@@ -81,4 +82,3 @@ rm_template_gimbal\power_restriction.o: .\App_task_Module\data_processing.h
 rm_template_gimbal\power_restriction.o: .\Communication\atom_imu.h
 rm_template_gimbal\power_restriction.o: ../Inc/gpio.h
 rm_template_gimbal\power_restriction.o: .\Communication\decode.h
-rm_template_gimbal\power_restriction.o: .\Communication\communication.h

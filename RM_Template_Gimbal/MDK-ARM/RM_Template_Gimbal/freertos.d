@@ -64,6 +64,7 @@ rm_template_gimbal\freertos.o: ../Inc/spi.h
 rm_template_gimbal\freertos.o: ../Inc/usart.h
 rm_template_gimbal\freertos.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\freertos.o: ../Inc/can.h
+rm_template_gimbal\freertos.o: .\Communication\communication.h
 rm_template_gimbal\freertos.o: .\App_task_Module\chassis_control.h
 rm_template_gimbal\freertos.o: .\Communication\atom_imu.h
 rm_template_gimbal\freertos.o: ../Inc/gpio.h
@@ -80,7 +81,6 @@ rm_template_gimbal\freertos.o: .\App_task_Module\gun_control.h
 rm_template_gimbal\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\freertos.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\freertos.o: ../Inc/tim.h
-rm_template_gimbal\freertos.o: .\Communication\communication.h
 rm_template_gimbal\freertos.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\freertos.o: .\App_task_Module\offline_check.h
 rm_template_gimbal\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

@@ -5,6 +5,7 @@
 #include "Motor_USE_CAN.h"
 #include "communication.h "
 #include "usart.h"
+#include "gimbal_control.h"
 
 /* 内部变量------------------------------------------------------------------*/
 SystemStateDef Remote;
@@ -32,12 +33,12 @@ void Led_Task(void const * argument)
 				if((SystemState.OutLine_Flag & 0x01))//遥控器掉线
 				{
 						HAL_GPIO_TogglePin(GPIOG,LED1_Pin);
-					  Remote.Mode = 1;
+					  gimbal_status.remote_mode = 1;
 					  printf("remote over");
 						osDelayUntil(&xLastWakeTime,200);		  
 				}else  
 				{
-						Remote.Mode=0;
+						gimbal_status.remote_mode=0;
 						HAL_GPIO_WritePin(GPIOG,LED1_Pin,GPIO_PIN_SET);
 				}
 				
@@ -157,7 +158,7 @@ void vOutLineCheck_Task(void const *argument)
 	{
 		RefreshTaskOutLineTime(vOutLineCheckTask_ON);
 		
-	  xianwei_check();
+	  limit_check();
 		TASK_Check();       //任务断线检测
 		OutLine_Check();    //模块断线检测
 		osDelayUntil(&xLastWakeTime,20);

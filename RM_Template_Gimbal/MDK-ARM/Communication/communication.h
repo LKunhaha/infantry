@@ -137,6 +137,22 @@ typedef struct //遥控器及键鼠通道
   Key key; 
 }RC_Ctl_t; 
 ////////////////遥控/////////////////////
+
+
+/*******************云台状态标志位******************************/
+typedef struct
+{
+	uint8_t gimbal_mode;
+	uint8_t gimbal_flag;
+	uint8_t remote_mode;
+	uint8_t minipc_mode;
+	uint8_t minipc_color;   //视觉需要的颜色信息
+	uint8_t bopan_mode;
+	uint8_t bopan_lastmode;
+	uint8_t bopan_flag;     //拨盘反转标志位
+}Gimbal_Status_t;
+
+
 /*******************mpu6500*********************************/
 typedef struct
 {

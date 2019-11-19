@@ -9,16 +9,17 @@
 
 pid_t pid_dial_pos  = {0};  //拨盘电机位置环
 pid_t pid_dial_spd  = {0};	//拨盘电机速度环
+Shoot_status_t Shoot_status ={0};
 
 Heat_Gun_t  ptr_heat_gun_t;
-Mode_Set bopan = {0};	
-Mode_Set Shoot_heat = {0};
 ramp_function_source_t shoot;
 extern uint8_t shot_frequency;
 uint8_t finish_flag = 0;
 static uint8_t Delay_flg;
+
 uint8_t Guodu_or_Stop_mode_flag = 0;   //过渡模式或停止模式的标志位(用于判断是否第一次进入这两种模式)
 uint8_t Reverse_mode_flag = 0;         //反转模式的标志位(用于判断是否第一次进入这种模式)
+
 /* 内部函数原型声明----------------------------------------------------------*/
 void Gun_Pid_Init()
 {
@@ -47,7 +48,7 @@ void Gun_Task(void const * argument)
 	int32_t set_speed = 0;
 	static uint8_t set_cnt = 0;
   /*设定发弹*/
-  bopan.flag=1;
+  gimbal_status.bopan_flag = 1;
 	
 	static float Guodu_Start_time;
 	static float Reverse_Start_time;
@@ -58,13 +59,13 @@ void Gun_Task(void const * argument)
 	
 	Limit_switch_Control : 是否采用限位开关控制
 	
-	Shoot_mouse.mode：0  
+	Shoot_status.remote_mode：0  
 										1  Shoot.mode = Mocha_danfa_mode  , bopan.mode = bopan_danfa_mode(摩擦轮到达指定转速后设定模式)
 										2  Shoot.mode = Mocha_Duofa_mode  , bopan.mode = bopan_Duofa_mode(摩擦轮到达指定转速后设定模式)
 										3  Shoot.mode = Mocha_Lianfa_mode , bopan.mode = bopan_Lianfa_mode(摩擦轮到达指定转速后设定模式)
 										4  Shoot.mode = Mocha_Duofa_mode  , bopan.mode = bopan_Lianfa_mode(摩擦轮到达指定转速后设定模式)
 										
-	bopan.mode      :  bopan_Stop           0       
+	gimbal_status.bopan_mode      :  bopan_Stop           0       
 										 bopan_danfa_mode     1           Shoot.mode == 1             ***基本模式
 										 bopan_Duofa_mode     2           Shoot.mode == 2             ***基本模式
 										 bopan_Lianfa_mode    3           Shoot.mode == 3             ***基本模式
@@ -72,7 +73,7 @@ void Gun_Task(void const * argument)
 										 bopan_guodu_mode     5           过渡模式，停转一小会
 										 bopan_fanzhuan_mode  10
 										 
-  bopan.flag      : 0   反转标志位
+  gimbal_status.bopan_flag      : 0   反转标志位
 	                  1
 	
 	Shoot.flag      : 0   限位开关电平未变化
@@ -92,15 +93,15 @@ void Gun_Task(void const * argument)
 		  moto_dial_get.cmd_time = GetSystemTimer();    //获取任务实时时间
 			if(Limit_switch_Control)                      //是否采用限位开关控制
 			{    
-					 if(Shoot.flag == 2 )  
+					 if(Shoot_status.limit_flag == 2 )  
 					 {
-							bopan.mode = bopan_shangdan_mode;
+							gimbal_status.bopan_mode = bopan_shangdan_mode;
 							Delay_flg = 0;
-					 }else if(Shoot.shoot_flg == 1 && bopan.mode == bopan_shangdan_mode)      // 压限位开关 && 上弹模式
-							bopan.mode = bopan_Stop;
-					 else if(Shoot.flag == 1 && bopan.mode == bopan_danfa_mode && Shoot.cnt == Shoot.danfa_cnt + 2) //预置时已经加了一
+					 }else if(Shoot_status.limit_level == 1 && gimbal_status.bopan_mode == bopan_shangdan_mode)      // 压限位开关 && 上弹模式
+							gimbal_status.bopan_mode = bopan_Stop;
+					 else if(Shoot_status.limit_flag == 1 && gimbal_status.bopan_mode == bopan_danfa_mode && Shoot_status.cnt == Shoot_status.danfa_cnt + 2) //预置时已经加了一
 							Delay_flg = 1;        //限位开关电平变化 && 单发模式 && 弹丸刚通过限位开关 ，进入过渡模式
-					 else if(Shoot.flag == 1 && bopan.mode == bopan_Duofa_mode && Shoot.cnt == Shoot.last_cnt + 6 ) 
+					 else if(Shoot_status.limit_flag == 1 && gimbal_status.bopan_mode == bopan_Duofa_mode && Shoot_status.cnt == Shoot_status.last_cnt + 6 ) 
 							Delay_flg = 1;        //限位开关电平变化 && 多发模式 && 3颗弹丸刚通过限位开关 ，先暂停一段时间 
 					 else
 					 {        
@@ -110,14 +111,14 @@ void Gun_Task(void const * argument)
 			
 		 if(Delay_flg || ( moto_dial_get.cmd_time - Guodu_Start_time < DELAY_TIME ))  //进入过渡模式后需暂停一段时间    
 		 {
-				 bopan.mode = bopan_guodu_mode;
+				 gimbal_status.bopan_mode = bopan_guodu_mode;
 			   moto_dial_get.run_time = GetSystemTimer();                 //获取拨盘开始转动的时间
 		 }
 	 
 		 bopan_check(set_cnt);//卡单检测	
 
     /*判断发射模式*/
-   switch(bopan.mode)
+   switch(gimbal_status.bopan_mode)
    {
 			case bopan_Stop://停止
 			{
@@ -215,7 +216,7 @@ void Gun_Task(void const * argument)
 						if( moto_dial_get.cmd_time - Reverse_Start_time > REVERSE_TIME )//反转设定    
 						{
 							Moto_dial_Angle_Reset();
-							bopan.flag = 1;
+							gimbal_status.bopan_flag = 1;
 							set_cnt = 0;
 						}else 
 						{			
@@ -230,12 +231,12 @@ void Gun_Task(void const * argument)
      /*驱动拨弹电机*/
 		 Allocate_Motor(&hcan1,pid_dial_spd.pos_out);
  
-		if(bopan.last_mode != Mocha_Duofa_mode && bopan.mode == Mocha_Duofa_mode)  
-			 Shoot.last_cnt = Shoot.cnt;		 //模式切换为单发或多发时，保存此时弹丸计数值(每颗弹丸计数值为2)，
-		else if(bopan.last_mode != Mocha_danfa_mode && bopan.mode == Mocha_danfa_mode)  
-			 Shoot.danfa_cnt = Shoot.cnt;
+		if(gimbal_status.bopan_lastmode != Mocha_Duofa_mode && gimbal_status.bopan_mode == Mocha_Duofa_mode)  
+			 Shoot_status.last_cnt = Shoot_status.cnt;		 //模式切换为单发或多发时，保存此时弹丸计数值(每颗弹丸计数值为2)，
+		else if(gimbal_status.bopan_lastmode != Mocha_danfa_mode && gimbal_status.bopan_mode == Mocha_danfa_mode)  
+			 Shoot_status.danfa_cnt = Shoot_status.cnt;
 		
-		bopan.last_mode = bopan.mode; 
+		gimbal_status.bopan_lastmode = gimbal_status.bopan_mode; 
 
     osDelayUntil(&xLastWakeTime,GUN_PERIOD);
 
@@ -288,12 +289,9 @@ void Shoot_Heat_Task(void const *argument)
   for(;;)
   {
     
-    Shoot_heat.val = Robot.heat.shoot_17_cooling_limit - Robot.heat.shoot_17_heat;//剩余热量
+    Shoot_status.val = Robot.heat.shoot_17_cooling_limit - Robot.heat.shoot_17_heat;//剩余热量
     
-    if(Shoot_heat.val<Shoot_heat.heat_forecast)
-    {
-      Shoot_heat.flag = 0;
-    }else Shoot_heat.flag = 1;
+
     
     osDelayUntil(&xLastWakeTime,10);
   }
@@ -312,35 +310,35 @@ void Shoot_Heat_Task(void const *argument)
 void bopan_check( uint8_t  Set_cnt )
 {
 	
-	   	if(bopan.flag  == 1)
+	   	if(gimbal_status.bopan_flag  == 1)
 			{
 		     /*判断拨盘是否转到位置*/			
 					if(my_abs(moto_dial_get.total_angle) >= 36859 * Set_cnt)      //转动一个弹丸，转子需转36/8 = 4.5 圈
 					{
-							if((bopan.mode == bopan_danfa_mode) && ( Set_cnt != 0) && (!Limit_switch_Control))
+							if((gimbal_status.bopan_mode == bopan_danfa_mode) && ( Set_cnt != 0) && (!Limit_switch_Control))
 							{ 
 								 Delay_flg = 1;
 							}
 							
-							if((bopan.mode != bopan_guodu_mode) && (bopan.mode != bopan_Stop))   //这两种模式下因为Set_cnt为0，所以不对其进行频繁清零
+							if((gimbal_status.bopan_mode != bopan_guodu_mode) && (gimbal_status.bopan_mode != bopan_Stop))   //这两种模式下因为Set_cnt为0，所以不对其进行频繁清零
 							{
 								 Moto_dial_Angle_Reset();
 						  }
 							
 							moto_dial_get.run_time = GetSystemTimer();                 //获取拨盘开始转动的时间
-							bopan.flag = 1;
+							gimbal_status.bopan_flag = 1;
 					}
 					else   //刚进入单发、多发、连发，或上弹模式  才会进入此判断
 					{
 							if( my_abs(moto_dial_get.cmd_time - moto_dial_get.run_time) > BLOCK_TIME )//堵转判定    
 							{
-									bopan.flag = 0;	
+									gimbal_status.bopan_flag = 0;	
 							}
 					}
 			}
 								
-			if(bopan.flag == 0)   
-				bopan.mode = bopan_fanzhuan_mode;//反转
+			if(gimbal_status.bopan_flag == 0)   
+				gimbal_status.bopan_mode = bopan_fanzhuan_mode;//反转
 	
 }
 

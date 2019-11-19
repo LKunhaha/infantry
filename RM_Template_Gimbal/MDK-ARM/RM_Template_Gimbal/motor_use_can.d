@@ -42,8 +42,10 @@ rm_template_gimbal\motor_use_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4x
 rm_template_gimbal\motor_use_can.o: ../Inc/can.h
 rm_template_gimbal\motor_use_can.o: ../Inc/main.h
 rm_template_gimbal\motor_use_can.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+rm_template_gimbal\motor_use_can.o: .\Communication\communication.h
+rm_template_gimbal\motor_use_can.o: ../Inc/spi.h
+rm_template_gimbal\motor_use_can.o: ../Inc/usart.h
 rm_template_gimbal\motor_use_can.o: .\Algorithm\protocol.h
-rm_template_gimbal\motor_use_can.o: ../Inc/USART.h
 rm_template_gimbal\motor_use_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 rm_template_gimbal\motor_use_can.o: ../Inc/FreeRTOSConfig.h
 rm_template_gimbal\motor_use_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

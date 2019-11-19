@@ -58,10 +58,11 @@ rm_template_gimbal\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/in
 rm_template_gimbal\stm32f4xx_it.o: ../Inc/usart.h
 rm_template_gimbal\stm32f4xx_it.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\stm32f4xx_it.o: ../Inc/can.h
+rm_template_gimbal\stm32f4xx_it.o: .\Communication\communication.h
+rm_template_gimbal\stm32f4xx_it.o: ../Inc/spi.h
 rm_template_gimbal\stm32f4xx_it.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\stm32f4xx_it.o: ../Inc/tim.h
 rm_template_gimbal\stm32f4xx_it.o: .\Communication\communication.h 
-rm_template_gimbal\stm32f4xx_it.o: ../Inc/spi.h
 rm_template_gimbal\stm32f4xx_it.o: .\Communication\pidwireless.h
 rm_template_gimbal\stm32f4xx_it.o: .\Algorithm\pid.h
 rm_template_gimbal\stm32f4xx_it.o: .\Algorithm\protocol.h
@@ -85,5 +86,4 @@ rm_template_gimbal\stm32f4xx_it.o: .\Communication\minipc.h
 rm_template_gimbal\stm32f4xx_it.o: .\App_task_Module\gun_control.h
 rm_template_gimbal\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\stm32f4xx_it.o: .\App_task_Module\chassis_control.h
-rm_template_gimbal\stm32f4xx_it.o: .\Communication\communication.h
 rm_template_gimbal\stm32f4xx_it.o: .\Algorithm\Power_restriction.h

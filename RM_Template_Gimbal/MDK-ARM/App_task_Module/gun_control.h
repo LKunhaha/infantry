@@ -9,6 +9,21 @@
 #include "minipc.h"
 
 /* 本模块向外部提供的数据类型定义--------------------------------------------*/
+
+typedef struct 
+{
+	uint8_t remote_mode;       //操作手指定的发射模式
+	uint8_t limit_flag;              //弹丸位置变化标志位
+  uint8_t limit_level;       //限位开关电平，压限位开关为高电平，为1，反之，为0
+	uint8_t last_limit_level;  //上次的限位开关电平
+	uint16_t cnt;              //弹丸计数值，发射一颗弹丸加二
+	uint16_t last_cnt;         //上次的弹丸计数值
+	uint16_t danfa_cnt;        //单发时的弹丸计数值
+	float val;
+  uint16_t heat_forecast;
+ }Shoot_status_t;
+
+ 
 typedef struct Heat_Gun_t
 {
 	int16_t  shted_bullet;
@@ -24,6 +39,7 @@ typedef struct Heat_Gun_t
 	uint8_t  stop_flg;
 	uint8_t  heat_down_flg;
 }Heat_Gun_t;
+
 volatile typedef struct 
 {
 	volatile uint16_t rel_heat;
@@ -55,6 +71,7 @@ volatile typedef struct
 extern volatile Power_Heat * ptr_power_heat;
 extern Heat_Gun_t  ptr_heat_gun_t;
 extern volatile float remain_power;
+extern Shoot_status_t Shoot_status;
 
 /* 本模块向外部提供的接口函数原型声明----------------------------------------*/
 void Gun_Task(void const * argument);

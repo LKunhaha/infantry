@@ -66,6 +66,7 @@ rm_template_gimbal\data_processing.o: App_task_Module\gun_control.h
 rm_template_gimbal\data_processing.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\data_processing.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\data_processing.o: ../Inc/can.h
+rm_template_gimbal\data_processing.o: .\Communication\communication.h
 rm_template_gimbal\data_processing.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\data_processing.o: ../Inc/tim.h
 rm_template_gimbal\data_processing.o: App_task_Module\gimbal_control.h
@@ -80,7 +81,6 @@ rm_template_gimbal\data_processing.o: .\App_task_Module\data_processing.h
 rm_template_gimbal\data_processing.o: .\Communication\atom_imu.h
 rm_template_gimbal\data_processing.o: ../Inc/gpio.h
 rm_template_gimbal\data_processing.o: .\Communication\decode.h
-rm_template_gimbal\data_processing.o: .\Communication\communication.h
 rm_template_gimbal\data_processing.o: .\Algorithm\SystemState.h
 rm_template_gimbal\data_processing.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\data_processing.o: .\Algorithm\user_lib.h

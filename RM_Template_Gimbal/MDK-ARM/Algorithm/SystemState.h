@@ -7,10 +7,7 @@
 
 
 #define OutLine_Time 100 //断线检测时间
-#define Motor_Stall_Time 200
-#define Motor_Stall_Spd 5
-#define weidong_time 20  //子弹检测时间
-#define shangdan_time  10000  //上弹时间
+#define ShangDan_TIME  10000  //上弹时间
 
 
 #define MyFlagSet(x,y) x=x|(0x00000001<<y) //设置标志位  y第几位
@@ -58,7 +55,6 @@ extern SystemStateDef SystemState;
 extern SystemStateDef Remote;
 extern SystemStateDef Gimbal_Motor;
 extern SystemStateDef JY61;
-extern uint8_t xianwei_flg;
 
 int SystemState_Inite(void);//SystemState初始化
 void RefreshSysTime(void);//刷新系统时间（mm）
@@ -69,7 +65,7 @@ void OutLine_Check(void);//断线检测检测
 void TASK_Check(void);//任务检测
 void RefreshDeviceOutLineTime(DeviceX_NoDEF DevX_No);//刷新外设通信时间时间数组
 void RefreshTaskOutLineTime(TASK_NoDEF Task_No);
-void xianwei_check(void);
+void limit_check(void);
 
 void vOutLineCheck_Task(void const *argument);
 

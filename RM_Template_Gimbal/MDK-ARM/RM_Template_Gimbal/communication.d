@@ -67,6 +67,7 @@ rm_template_gimbal\communication.o: .\App_task_Module\gun_control.h
 rm_template_gimbal\communication.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\communication.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\communication.o: ../Inc/can.h
+rm_template_gimbal\communication.o: .\Communication\communication.h
 rm_template_gimbal\communication.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\communication.o: ../Inc/tim.h
 rm_template_gimbal\communication.o: .\App_task_Module\gimbal_control.h
@@ -81,4 +82,3 @@ rm_template_gimbal\communication.o: .\App_task_Module\data_processing.h
 rm_template_gimbal\communication.o: .\Communication\atom_imu.h
 rm_template_gimbal\communication.o: ../Inc/gpio.h
 rm_template_gimbal\communication.o: .\Communication\decode.h
-rm_template_gimbal\communication.o: .\Communication\communication.h

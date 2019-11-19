@@ -172,52 +172,6 @@ float pid_calc(pid_t* pid, float get, float set){
 }
 
 /**
-    *@bref. special calculate position PID @attention @use @gyro data!!
-    *@param[in] set： target
-    *@param[in] real	measure
-    */
-float pid_sp_calc(pid_t* pid, float get, float set, float gyro){
-    pid->get[NOW] = get;
-    pid->set[NOW] = set;
-    pid->err[NOW] = set - get;	//set - measure
-    
-    
-    if(pid->pid_mode == POSITION_PID) //位置式p
-    {
-        pid->pout = pid->p * pid->err[NOW];
-				if(fabs(pid->i) >= 0.001f)
-					pid->iout += pid->i * pid->err[NOW];
-				else
-					pid->iout = 0;
-        pid->dout = -pid->d * gyro/100.0f;	
-        ABS_limit(&(pid->iout), pid->IntegralLimit);
-        pid->pos_out = pid->pout + pid->iout + pid->dout;
-        ABS_limit(&(pid->pos_out), pid->MaxOutput);
-        pid->last_pos_out = pid->pos_out;	//update last time 
-    }
-    else if(pid->pid_mode == DELTA_PID)//增量式P
-    {
-//        pid->pout = pid->p * (pid->err[NOW] - pid->err[LAST]);
-//        pid->iout = pid->i * pid->err[NOW];
-//        pid->dout = pid->d * (pid->err[NOW] - 2*pid->err[LAST] + pid->err[LLAST]);
-//        
-//        ABS_limit(&(pid->iout), pid->IntegralLimit);
-//        pid->delta_u = pid->pout + pid->iout + pid->dout;
-//        pid->delta_out = pid->last_delta_out + pid->delta_u;
-//        ABS_limit(&(pid->delta_out), pid->MaxOutput);
-//        pid->last_delta_out = pid->delta_out;	//update last time
-    }
-    
-    pid->err[LLAST] = pid->err[LAST];
-    pid->err[LAST] = pid->err[NOW];
-    pid->get[LLAST] = pid->get[LAST];
-    pid->get[LAST] = pid->get[NOW];
-    pid->set[LLAST] = pid->set[LAST];
-    pid->set[LAST] = pid->set[NOW];
-    return pid->pid_mode==POSITION_PID ? pid->pos_out : pid->delta_out;
-//	
-}
-/**
 	**************************************************************
 	** Descriptions: pid参数初始化
 	** Input: 	

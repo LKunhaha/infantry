@@ -9,7 +9,7 @@ float g_TimePer[100] = {0};
 float g_Time_DeviceOutLine[DeviceTotal_No] = {0};//外设最近一次通信时间数组
 float g_Time_TASKOutLine[TASKTotal_No] = {0};//外设最近一次通信时间数组
 static float Time;
-static float Shangdan_time;
+static float shangdan_time;
 
 //断线检测检测
 void OutLine_Check()
@@ -48,15 +48,6 @@ void TASK_Check()
 		}
 	}
 }
-
-
-//=====================================================
-//							  内部函数
-//
-//====================================================
-
-
-
 
 
 int SystemState_Inite()
@@ -103,31 +94,32 @@ void RefreshTaskOutLineTime(TASK_NoDEF Task_No)
 	
 }
 
-void xianwei_check()     //限位检测（放在掉线检测任务里）
+void limit_check()     //限位检测（放在掉线检测任务里）
 {
 		float time = GetSystemTimer();//当前系统时间
   
-	  if(xianwei_flg)   //限位标志
+	  if( HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) )   //限位标志
 		{
-        Shoot.shoot_flg = 1;                  // 压限位开关  为高电平 
-        Shangdan_time = GetSystemTimer();
+        Shoot_status.limit_level = 1;                  // 压限位开关  为高电平 
+        shangdan_time = GetSystemTimer();
 		}else
 		{
-			  Shoot.shoot_flg = 0;                  //未压限位开关  或  过限位开关  
+			  Shoot_status.limit_level = 0;                  //未压限位开关  或  过限位开关  
 		}
 		
-		if(Shoot.last_shoot_flg != Shoot.shoot_flg) 
+		if(Shoot_status.last_limit_level != Shoot_status.limit_level) 
 		{
-				Shoot.flag = 1;           //弹丸从   未压限位开关 至 压限位开关   或   压限位开关 至 过限位开关
-				Shoot.cnt += 1;            //发射一颗弹丸加2(两次电平变化)
-				
-		}else  Shoot.flag = 0;         //弹丸位置无变化
-					        
-    if(time - Shangdan_time > shangdan_time  )//上弹检测（未压限位开关持续时间大于10秒就进入上弹模式）
+				Shoot_status.limit_flag = 1;            //弹丸从   未压限位开关 至 压限位开关   或   压限位开关 至 过限位开关
+				Shoot_status.cnt += 1;            //发射一颗弹丸加2(两次电平变化)	
+		}else  
 		{
-			  Shoot.flag = 2;
+			  Shoot_status.limit_flag = 0;         //弹丸位置无变化
+		}	
+		
+    if(time - shangdan_time > ShangDan_TIME )//上弹检测（未压限位开关持续时间大于10秒就进入上弹模式）
+		{
+			  Shoot_status.limit_flag = 2;
 		}
      
-    
-    Shoot.last_shoot_flg = Shoot.shoot_flg;
+    Shoot_status.last_limit_level = Shoot_status.limit_level;
 }

@@ -57,13 +57,14 @@ rm_template_gimbal\gun_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/inc
 rm_template_gimbal\gun_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 rm_template_gimbal\gun_control.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\gun_control.o: ../Inc/can.h
+rm_template_gimbal\gun_control.o: .\Communication\communication.h
+rm_template_gimbal\gun_control.o: ../Inc/spi.h
+rm_template_gimbal\gun_control.o: ../Inc/usart.h
 rm_template_gimbal\gun_control.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\gun_control.o: ../Inc/tim.h
 rm_template_gimbal\gun_control.o: .\Algorithm\pid.h
 rm_template_gimbal\gun_control.o: .\Communication\minipc.h
 rm_template_gimbal\gun_control.o: .\Communication\communication.h 
-rm_template_gimbal\gun_control.o: ../Inc/spi.h
-rm_template_gimbal\gun_control.o: ../Inc/usart.h
 rm_template_gimbal\gun_control.o: .\Algorithm\SystemState.h
 rm_template_gimbal\gun_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\gun_control.o: .\Algorithm\user_lib.h
@@ -80,7 +81,6 @@ rm_template_gimbal\gun_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMS
 rm_template_gimbal\gun_control.o: .\Algorithm\protocol.h
 rm_template_gimbal\gun_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\gun_control.o: .\App_task_Module\chassis_control.h
-rm_template_gimbal\gun_control.o: .\Communication\communication.h
 rm_template_gimbal\gun_control.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\gun_control.o: .\Communication\atom_imu.h
 rm_template_gimbal\gun_control.o: ../Inc/gpio.h

@@ -14,6 +14,7 @@
 #include "Motor_USE_CAN.h"
 #include "protocol.h"
 #include "SystemState.h"
+
 /* 内部自定义数据类型 --------------------------------------------------------*/
 
 /* 内部宏定义 ----------------------------------------------------------------*/
@@ -293,33 +294,6 @@ void get_moto_offset(moto_measure_t *ptr,uint8_t CAN_RX_date[])
 }
 
 #define ABS(x)	( (x>0) ? (x) : (-x) )
-/**
-	**************************************************************
-	** Descriptions: 获取电机的总角度值
-	** Input: 	
-	**			   *P:需要获取总角度值的地址
-	**				
-	** Output: NULL
-	**************************************************************
-**/
-void get_total_angle(moto_measure_t *p){
-	
-	int res1, res2, delta;
-	if(p->angle < p->last_angle){			//?????
-		res1 = p->angle + 8192 - p->last_angle;	//??,delta=+
-		res2 = p->angle - p->last_angle;				//??	delta=-
-	}else{	//angle > last
-		res1 = p->angle - 8192 - p->last_angle ;//??	delta -
-		res2 = p->angle - p->last_angle;				//??	delta +
-	}
-	if(ABS(res1)<ABS(res2))
-		delta = res1;
-	else
-		delta = res2;
-
-	p->total_angle += delta;
-	p->last_angle = p->angle;
-}
 
 
 /**
@@ -363,8 +337,7 @@ void CAN_Send_Remote( CAN_HandleTypeDef * hcan,
 	** Output: NULL
 	**************************************************************
 **/
-void CAN_Send_Gimbal( CAN_HandleTypeDef * hcan, int16_t yaw_angle, int16_t yaw_speed, 
-	                                   uint8_t flag, uint8_t flag1, uint8_t flag2, uint8_t remote_flag)
+void CAN_Send_Gimbal( CAN_HandleTypeDef * hcan, moto_measure_t * yaw_get, Gimbal_Status_t * gimbal_status)
 {
 	    uint8_t CAN_TX_DATA[8];
 	
@@ -373,14 +346,14 @@ void CAN_Send_Gimbal( CAN_HandleTypeDef * hcan, int16_t yaw_angle, int16_t yaw_s
 			CANSend_Gimbal.RTR = CAN_RTR_DATA;
 			CANSend_Gimbal.StdId = 0x120;
 
-			CAN_TX_DATA[0] = yaw_angle >> 8;
-			CAN_TX_DATA[1] = yaw_angle;
-			CAN_TX_DATA[2] = yaw_speed >> 8;
-			CAN_TX_DATA[3] = yaw_speed;
-			CAN_TX_DATA[4] = flag;
-			CAN_TX_DATA[5] = flag1;
-			CAN_TX_DATA[6] = remote_flag;
-			CAN_TX_DATA[7] = flag2;
+			CAN_TX_DATA[0] = yaw_get->angle >> 8;
+			CAN_TX_DATA[1] = yaw_get->angle;
+			CAN_TX_DATA[2] = yaw_get->total_angle >> 8;
+			CAN_TX_DATA[3] = yaw_get->total_angle;
+			CAN_TX_DATA[4] = gimbal_status->minipc_mode;
+			CAN_TX_DATA[5] = gimbal_status->gimbal_mode;
+			CAN_TX_DATA[6] = gimbal_status->remote_mode;
+			CAN_TX_DATA[7] = gimbal_status->gimbal_flag;
 	
 			HAL_CAN_AddTxMessage(hcan, &CANSend_Gimbal, CAN_TX_DATA, (uint32_t *)CAN_TX_MAILBOX0 );
 }	

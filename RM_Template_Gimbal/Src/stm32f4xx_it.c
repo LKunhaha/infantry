@@ -47,7 +47,6 @@ CAN_RxHeaderTypeDef  CAN1_Rx_Header;
 CAN_RxHeaderTypeDef  CAN2_Rx_Header;
 uint8_t CAN1_RX_date[8];
 uint8_t CAN2_RX_date[8];
-uint8_t xianwei_flg;
 uint32_t DMA_FLAGS;
 /* USER CODE END TD */
 
@@ -96,7 +95,7 @@ extern UART_HandleTypeDef huart6;
 extern TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN EV */
-uint8_t xianwei_flg;
+
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -570,7 +569,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-	static uint16_t i;
+
   /* USER CODE END Callback 0 */
 	if (htim->Instance == TIM1) 
 	{
@@ -594,12 +593,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	else if(htim == (&htim6))
 	{
 		RefreshSysTime();
-		i++;
-		if(i==5)
-		{
-		  xianwei_flg= HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_4); 
-			i=0;
-		}
   }
 	
 }

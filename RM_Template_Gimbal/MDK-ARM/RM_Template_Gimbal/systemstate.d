@@ -64,6 +64,7 @@ rm_template_gimbal\systemstate.o: ../Inc/spi.h
 rm_template_gimbal\systemstate.o: ../Inc/usart.h
 rm_template_gimbal\systemstate.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\systemstate.o: ../Inc/can.h
+rm_template_gimbal\systemstate.o: .\Communication\communication.h
 rm_template_gimbal\systemstate.o: .\App_task_Module\chassis_control.h
 rm_template_gimbal\systemstate.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\systemstate.o: .\App_task_Module\gimbal_control.h
@@ -79,7 +80,6 @@ rm_template_gimbal\systemstate.o: .\App_task_Module\gun_control.h
 rm_template_gimbal\systemstate.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\systemstate.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\systemstate.o: .\App_task_Module\chassis_control.h
-rm_template_gimbal\systemstate.o: .\Communication\communication.h
 rm_template_gimbal\systemstate.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\systemstate.o: .\Communication\atom_imu.h
 rm_template_gimbal\systemstate.o: ../Inc/gpio.h

@@ -11,9 +11,7 @@ static  int16_t Pitch_Current_Value = 0;
 Pos_Set  yaw_set={0};
 Pos_Set  yaw_tly_set={0};
 Pos_Set  pit_set={0};
-Mode_Set Gimbal={0};
-Mode_Set Minipc={0};
-Mode_Set Shoot={0};
+Gimbal_Status_t gimbal_status;
 
 pid_t pid_yaw       = {0};  //yaw轴位置环
 pid_t pid_yaw_jy901 = {0};  //外接陀螺仪 /*目前只用于位置环*/ 
@@ -83,8 +81,8 @@ void gimbal_pid_init(void)    //下次调一下PID
 void Gimbal_Task(void const * argument)
 {
 	yaw_set.mode = 0;
-	Gimbal.flag = 0;
-	Gimbal.mode = 3;          //初始设定为编码器模式
+	gimbal_status.gimbal_flag = 0;
+	gimbal_status.gimbal_mode = 3;          //初始设定为编码器模式
 	Pitch_Current_Value = 0;
 	Yaw_Current_Value = 0;
 	gimbal_pid_init();
@@ -93,38 +91,38 @@ void Gimbal_Task(void const * argument)
 	portTickType xLastWakeTime;
   xLastWakeTime = xTaskGetTickCount();
 /*************************     模式说明     ********************************
-		minipc.mode              ：0  关闭视觉
-	                             1  自瞄               将gimbal.mode置为2
-															 2  能量机关           将gimbal.mode置为3
+		gimbal_status.minipc_mode              ：0  关闭视觉
+	                                           1  自瞄               将gimbal_status.gimbal_mode置为2
+															               2  能量机关           将gimbal_status.gimbal_mode置为3
 					
-		gimbal.mode	             ：0  云台失效
-															 1  陀螺仪模式(对应底盘的跟随模式,非扭腰模式下)
-															 2  自瞄
-															 3  编码器模式(YAW轴超限时、能量机关模式 也置为此模式) 
+		gimbal_status.gimbal_mode	             ：0  云台失效
+															               1  陀螺仪模式(对应底盘的跟随模式,非扭腰模式下)
+															               2  自瞄
+															               3  编码器模式(YAW轴超限时、能量机关模式 也置为此模式) 
 					
-		gimbal.flag	             ：0  yaw轴不超限
-															 1  暂未使用
-															 2  yaw超限标志
-															 3  暂未使用
+		gimbal_status.gimbal_flag	             ：0  yaw轴不超限
+															               1  暂未使用
+															               2  yaw超限标志
+															               3  暂未使用
 	****************************************************************************/			
 	for(;;)		
   {
 		  IMU_Get_Data();
-		  CAN_Send_Gimbal(&hcan2,yaw_get.angle,yaw_get.total_angle,Minipc.mode,Gimbal.mode,Gimbal.flag,Remote.Mode);//主控发送
+		  CAN_Send_Gimbal(&hcan2,&yaw_get,&gimbal_status);//主控发送
 			
 	    RefreshTaskOutLineTime(GimbalContrlTask_ON);
       
-			if(Minipc.mode == 2)   //能量机关
+			if(gimbal_status.minipc_mode == 2)   //能量机关
 			{
-            Gimbal.mode = 3;
+            gimbal_status.gimbal_mode = 3;
             yaw_set.expect = yaw_set.expect_pc;
             pit_set.expect = pit_set.expect_pc;
         
             yaw_tly_set.expect_remote = ptr_jy901_t_yaw.final_angle;       //保存当前yaw角度值(以陀螺仪的方式,实时更新)
             pit_set.expect_remote = pit_get.total_angle;                    //保存当前pitch轴对的角度值(以电机角度的方式,实时更新)
-			}else if(Minipc.mode == 1 && Gimbal.flag == 0) //自瞄&&不超限
+			}else if(gimbal_status.minipc_mode == 1 && gimbal_status.gimbal_flag == 0) //自瞄&&不超限
 			{
-            Gimbal.mode = 2;
+            gimbal_status.gimbal_mode = 2;
             yaw_set.expect = yaw_set.expect_pc;
             pit_set.expect = pit_set.expect_pc;
         
@@ -140,18 +138,18 @@ void Gimbal_Task(void const * argument)
 			if((yaw_get.angle < 3900) )                 //云台超限处理 
 			{
             yaw_set.expect = 3900 - yaw_get.offset_angle;
-            Gimbal.mode = 3;                      //超限后以编码器模式调整回来
-            Gimbal.flag = 2;                      //超限标志位
+            gimbal_status.gimbal_mode = 3;                      //超限后以编码器模式调整回来
+            gimbal_status.gimbal_flag = 2;                      //超限标志位
 			}else if((yaw_get.angle > 7500) )    
 			{
             yaw_set.expect = 7500 - yaw_get.offset_angle;
-            Gimbal.mode = 3;                      //超限后以编码器模式调整回来
-            Gimbal.flag = 2;                      //超限标志位       
+            gimbal_status.gimbal_mode = 3;                      //超限后以编码器模式调整回来
+            gimbal_status.gimbal_flag = 2;                      //超限标志位       
 			}
-			else if (Gimbal.flag == 2)                  //Yaw轴超限后，只有当yaw轴不超限才会进入此判断，并清除超限标志位
+			else if (gimbal_status.gimbal_flag == 2)                  //Yaw轴超限后，只有当yaw轴不超限才会进入此判断，并清除超限标志位
 			{   
-//            Gimbal.mode = 1;                    //置为陀螺仪模式
-				    Gimbal.flag = 0;                      //清除超限标志
+//            gimbal_status.gimbal_mode = 1;                    //置为陀螺仪模式
+				   gimbal_status.gimbal_flag = 0;                      //清除超限标志
 //            yaw_set.expect = 0;
             yaw_tly_set.expect = ptr_jy901_t_yaw.final_angle;  //yaw轴给定值为当前的yaw轴角度值(陀螺仪方式)		                                                 
 			}
@@ -169,7 +167,7 @@ void Gimbal_Task(void const * argument)
 			}
 	
 
-			switch(Gimbal.mode)
+			switch(gimbal_status.gimbal_mode)
 			{	
 				case 1: 
 				{     //陀螺仪模式

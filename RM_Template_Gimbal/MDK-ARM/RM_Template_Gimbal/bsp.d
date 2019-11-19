@@ -51,6 +51,7 @@ rm_template_gimbal\bsp.o: ../Inc/adc.h
 rm_template_gimbal\bsp.o: .\Communication\communication.h 
 rm_template_gimbal\bsp.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\bsp.o: .\Motor_driver\Motor_USE_CAN.h
+rm_template_gimbal\bsp.o: .\Communication\communication.h
 rm_template_gimbal\bsp.o: .\Communication\minipc.h
 rm_template_gimbal\bsp.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\bsp.o: .\App_task_Module\data_processing.h
@@ -84,6 +85,5 @@ rm_template_gimbal\bsp.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\bsp.o: .\App_task_Module\data_processing.h
 rm_template_gimbal\bsp.o: .\Communication\atom_imu.h
 rm_template_gimbal\bsp.o: .\Communication\decode.h
-rm_template_gimbal\bsp.o: .\Communication\communication.h
 rm_template_gimbal\bsp.o: .\Algorithm\SystemState.h
 rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

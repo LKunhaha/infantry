@@ -5,6 +5,7 @@
 #include "stm32f4xx_hal.h"
 #include "stdint.h"
 #include "can.h"
+#include "communication.h"
 
 #define FILTER_BUF_LEN		5
 
@@ -52,13 +53,12 @@ void Allocate_Motor(CAN_HandleTypeDef * hcan,int16_t value);
 void get_moto_measure_3508(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
 void get_moto_measure_6623(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
 void get_moto_offset(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
-void get_total_angle(moto_measure_t *p);
 void Cloud_Platform_Motor_jiaozhun(CAN_HandleTypeDef * hcan);
 void Cloud_Platform_Motor_Disable(CAN_HandleTypeDef * hcan);
 void Chassis_Motor_Disable( CAN_HandleTypeDef * hcan);
 void CAN_Send_Remote( CAN_HandleTypeDef * hcan,int16_t key_v, int16_t rc_ch0, int16_t rc_ch1, uint8_t rc_s1, uint8_t rc_s2);
 void CAN_Send_Error( CAN_HandleTypeDef * hcan, int16_t OutLine_Flag, int16_t task_OutLine_Flag );
-void CAN_Send_Gimbal( CAN_HandleTypeDef * hcan, int16_t yaw_angle, int16_t yaw_speed , uint8_t flag , uint8_t flag1 , uint8_t flag2 , uint8_t remote_flag);
+void CAN_Send_Gimbal( CAN_HandleTypeDef * hcan, moto_measure_t * yaw_get, Gimbal_Status_t * gimbal_status);
 void CAN_Send_cilent( CAN_HandleTypeDef * hcan, uint8_t flag0, uint8_t flag1 , uint8_t flag2 ,uint8_t flag3);
 void CAN_GET_DP( CAN_HandleTypeDef * hcan);
 void CAN_GET_CP( CAN_HandleTypeDef * hcan);
