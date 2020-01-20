@@ -8,7 +8,6 @@ SystemStateDef SystemState = {0};
 float g_TimePer[100] = {0};
 float g_Time_DeviceOutLine[DeviceTotal_No] = {0};//外设最近一次通信时间数组
 float g_Time_TASKOutLine[TASKTotal_No] = {0};//外设最近一次通信时间数组
-static float Time;
 static float shangdan_time;
 
 //断线检测检测

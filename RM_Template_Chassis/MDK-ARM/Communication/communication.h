@@ -96,7 +96,7 @@ typedef struct    //Íâ½ÓÍÓÂİÒÇ    ¿ÉÒÔ¸Ä³ÉÌ×ÓÃµç»ú²ÎÊıµÄ½á¹¹Ìåmoto_measure_t  _´
 	float JY901_angle_last;
 	float first_angle;
 	float angle_round;
-  float final_angle;
+  float total_angle;
   float last_final_angle;
 	float vx;
 	float vy;	
@@ -183,6 +183,9 @@ extern XTLY tly;
 
 /****************Ò£¿Ø********************/
 extern RC_Ctl_t RC_Ctl; //Ò£¿ØÊı¾İ
+
+//ÔÆÌ¨Êı¾İ
+extern Gimbal_Status_t gimbal_status;
 
 /* ±¾Ä£¿éÏòÍâ²¿Ìá¹©µÄ½Ó¿Úº¯ÊıÔ­ĞÍÉùÃ÷ ----------------------------------------*/
 //Íâ½ÓÍÓÂİÒÇ

@@ -62,6 +62,7 @@
 "rm_template_gimbal\gun_control.o"
 "rm_template_gimbal\offline_check.o"
 "rm_template_gimbal\other_tasks.o"
+"..\DSP_LIB\arm_cortexM4lf_math.lib"
 --library_type=microlib --strict --scatter "RM_Template_Gimbal\RM_Template_Gimbal.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

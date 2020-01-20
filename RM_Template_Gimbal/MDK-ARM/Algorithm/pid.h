@@ -24,6 +24,7 @@
 #define __pid_H
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#define ABS(x)	( (x>0) ? (x) : (-x) )
 
 enum {
     LLAST	= 0,

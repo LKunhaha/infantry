@@ -75,7 +75,7 @@ void BSP_Init(void)
 	/*开启CAN和ADC*/
 	HAL_CAN_Start(&hcan1);
 	HAL_CAN_Start(&hcan2);
-	HAL_ADC_Start(&hadc1);
+//	HAL_ADC_Start(&hadc1);           //此函数开启后，会与后面的 HAL_ADC_Start_DMA 函数相冲突，导致DMA只开启一次。具体原因暂未找到
 	
 	/*断线检测*/
 	SystemState_Inite();

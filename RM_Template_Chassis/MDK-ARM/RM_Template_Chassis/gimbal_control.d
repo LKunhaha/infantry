@@ -77,9 +77,9 @@ rm_template_chassis\gimbal_control.o: ../Inc/tim.h
 rm_template_chassis\gimbal_control.o: .\App_task_Module\chassis_control.h
 rm_template_chassis\gimbal_control.o: .\Communication\communication.h
 rm_template_chassis\gimbal_control.o: .\Algorithm\Power_restriction.h
+rm_template_chassis\gimbal_control.o: .\Algorithm\user_lib.h
 rm_template_chassis\gimbal_control.o: .\Communication\atom_imu.h
 rm_template_chassis\gimbal_control.o: ../Inc/gpio.h
 rm_template_chassis\gimbal_control.o: .\Communication\decode.h
 rm_template_chassis\gimbal_control.o: .\Algorithm\SystemState.h
 rm_template_chassis\gimbal_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
-rm_template_chassis\gimbal_control.o: .\Algorithm\user_lib.h

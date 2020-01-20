@@ -58,7 +58,6 @@ void Cloud_Platform_Motor(CAN_HandleTypeDef * hcan,int16_t yaw,int16_t	pitch)
 	  uint8_t CAN_TX_DATA[8];
 	
 		Cloud_Platform_Data.StdId = 0x1FF;
-//		Cloud_Platform_Data.StdId = 0x3F0;
 		Cloud_Platform_Data.IDE = CAN_ID_STD;
 		Cloud_Platform_Data.RTR = CAN_RTR_DATA;
 		Cloud_Platform_Data.DLC = 0X08;
@@ -277,6 +276,29 @@ void get_moto_measure_3508(moto_measure_t *ptr,uint8_t CAN_RX_date[])
 		ptr->round_cnt ++;
 	ptr->total_angle = ptr->round_cnt * 8192 + ptr->angle - ptr->offset_angle;
 }
+
+/**                                                           //待续
+	**************************************************************
+	** Descriptions: 获取CAN通讯的6020电机的返回值
+	** Input: 	
+	**			  ptr:目标数据的内存地址
+	**				hcan->pRxMsg->Data:保存的来自CAN的数据的数组
+	** Output: NULL
+	**************************************************************
+**/
+void get_moto_measure_6020(moto_measure_t *ptr,uint8_t CAN_RX_date[])
+{
+	ptr->last_angle = ptr->angle;
+	ptr->angle = (uint16_t)(CAN_RX_date[0]<<8 | CAN_RX_date[1]) ;
+	ptr->speed_rpm  = (int16_t)(CAN_RX_date[2]<<8 | CAN_RX_date[3]);
+	ptr->given_current = (int16_t)(CAN_RX_date[4]<<8 | CAN_RX_date[5]);
+
+	if(ptr->angle - ptr->last_angle > 4096)
+		ptr->round_cnt --;
+	else if (ptr->angle - ptr->last_angle < -4096)
+		ptr->round_cnt ++;
+	ptr->total_angle = ptr->round_cnt * 8192 + ptr->angle - ptr->offset_angle;
+}
 /**
 	**************************************************************
 	** Descriptions:获取电机返回值的偏差值
@@ -289,11 +311,13 @@ void get_moto_measure_3508(moto_measure_t *ptr,uint8_t CAN_RX_date[])
 /*this function should be called after system+can init */
 void get_moto_offset(moto_measure_t *ptr,uint8_t CAN_RX_date[])
 {
+//	ptr->angle = 7200 ;
+//	ptr->offset_angle = 7200;
 	ptr->angle = (uint16_t)(CAN_RX_date[0]<<8 | CAN_RX_date[1]) ;
 	ptr->offset_angle = ptr->angle;
 }
 
-#define ABS(x)	( (x>0) ? (x) : (-x) )
+
 
 
 /**

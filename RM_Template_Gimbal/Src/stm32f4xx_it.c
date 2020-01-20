@@ -48,6 +48,7 @@ CAN_RxHeaderTypeDef  CAN2_Rx_Header;
 uint8_t CAN1_RX_date[8];
 uint8_t CAN2_RX_date[8];
 uint32_t DMA_FLAGS;
+uint32_t jjy_count;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -429,6 +430,7 @@ void UART8_IRQHandler(void)
 		__HAL_DMA_SET_COUNTER(&hdma_uart8_rx,SizeofJY901);
     __HAL_DMA_ENABLE(&hdma_uart8_rx);
 		
+		jjy_count++;
 				/*清除IDLE标志位*/
     __HAL_UART_CLEAR_IDLEFLAG(&huart8);
 	}
@@ -629,32 +631,19 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN1_Rx_Header, CAN1_RX_date);
 		switch(CAN1_Rx_Header.StdId)
 		{
-			case 0x205:
-			{
-				
-       RefreshDeviceOutLineTime(MotorY_NO);
-				
-				if(yaw_get.msg_cnt++ <= 50)
-				{
-					get_moto_offset(&yaw_get,CAN1_RX_date);
-				}else
-				{
-					yaw_get.msg_cnt = 51;
-					get_moto_measure_6623(&yaw_get,CAN1_RX_date);
-				}
-			}break;
-			case 0x206:
+			case 0x206:                            //pitch轴电机反馈
 			{
 				
 				RefreshDeviceOutLineTime(MotorP_NO);
 				
-				if(pit_get.msg_cnt++ <= 50)
+				if(pit_get.msg_cnt++ <= 10)
 				{
-					get_moto_offset(&pit_get,CAN1_RX_date);
+					pit_get.angle = 7000 ;            //基准位置选定
+          pit_get.offset_angle = 7000;
 				}else
 				{
-					pit_get.msg_cnt = 51;
-					get_moto_measure_6623(&pit_get,CAN1_RX_date);
+					pit_get.msg_cnt = 11;
+					get_moto_measure_6020(&pit_get,CAN1_RX_date);
 				}
 			}break;
 			case 0x201:
@@ -662,13 +651,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				
 				RefreshDeviceOutLineTime(MotorB_NO);
 				
-				if(moto_dial_get.msg_cnt++ <= 50)	
+				if(moto_dial_get.msg_cnt++ <= 10)	
 				{
 					get_moto_offset(&moto_dial_get,CAN1_RX_date);
 				}
 				else
 				{	
-					moto_dial_get.msg_cnt=51;	
+					moto_dial_get.msg_cnt = 11;	
 					get_moto_measure_6623(&moto_dial_get,CAN1_RX_date);
 				}
 			}break;
@@ -679,19 +668,28 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	  HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN2_Rx_Header, CAN2_RX_date);
 		switch(CAN2_Rx_Header.StdId)
 		{
-			case 0x220 :
+		  case 0x205:                            //yaw轴电机反馈
 			{
-		
-			}
-			break;
-      
-      case 0x911  :
+       RefreshDeviceOutLineTime(MotorY_NO);
+				
+				if(yaw_get.msg_cnt++ <= 10)
+				{
+          yaw_get.angle = 7462 ;            //基准位置选定
+          yaw_get.offset_angle = 7462;
+				}else
+				{
+					yaw_get.msg_cnt = 11;
+					get_moto_measure_6020(&yaw_get,CAN2_RX_date);
+				}
+			}break;
+			
+      case 0x160  :
       {
         CAN_GET_ERROR(&hcan2);
       }
       break;
       
-      case 0x021  :
+      case 0x150  :
       {
         CAN_GET_CP(&hcan2);
       }

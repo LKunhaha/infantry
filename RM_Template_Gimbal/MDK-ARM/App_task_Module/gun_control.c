@@ -166,7 +166,7 @@ void Gun_Task(void const * argument)
 			
       case bopan_Lianfa_mode://Á¬·¢Ä£Ê½
       { 
-					set_speed = -3000;
+					set_speed = -1500;
 					set_cnt = 1;
 					
 				  Guodu_or_Stop_mode_flag = 0;
@@ -256,11 +256,11 @@ void Mocha_Task(void const *argument)  //µ÷ÊÔ²¦ÅÌÖĞ¹Ø±ÕÁË´ËÈÎÎñ£¬Ê¹µÃÄ¦²ÁÂÖËÙ¶È²
 	osDelay(100);
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	ramp_init(&shoot,0.01,150,100);//Ä¦²ÁÂÖĞ±ÆÂ           0.01ÎªĞ±ÂÊ  150ºÍ100Îª×î´ó¡¢×îĞ¡Öµ(×î´óÖµÒ²ÎªÄ¿±êÖµ)
+	ramp_init(&shoot,0.01,150,105);//Ä¦²ÁÂÖĞ±ÆÂ           0.01ÎªĞ±ÂÊ  150ºÍ100Îª×î´ó¡¢×îĞ¡Öµ(×î´óÖµÒ²ÎªÄ¿±êÖµ)
 	
 	for(;;)  //Ä¿Ç°ÓÃÀ´µ÷ÕûÄ¦²ÁÂÖµÄ×îÖÕ×ªËÙ
 	{
-		shoot.max_value = 118;																	
+		shoot.max_value = 125;																	
 		ramp_calc(&shoot,100);  //100ÎªÔö³¤ÏµÊı
 		Friction_Wheel_Motor(shoot.out,shoot.out);
 	

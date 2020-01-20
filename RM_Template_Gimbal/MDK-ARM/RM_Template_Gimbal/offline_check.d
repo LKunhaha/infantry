@@ -63,10 +63,10 @@ rm_template_gimbal\offline_check.o: ../Inc/can.h
 rm_template_gimbal\offline_check.o: .\Communication\communication.h
 rm_template_gimbal\offline_check.o: ../Inc/spi.h
 rm_template_gimbal\offline_check.o: ../Inc/usart.h
+rm_template_gimbal\offline_check.o: .\Algorithm\pid.h
 rm_template_gimbal\offline_check.o: .\Communication\communication.h 
 rm_template_gimbal\offline_check.o: App_task_Module\gimbal_control.h
 rm_template_gimbal\offline_check.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
-rm_template_gimbal\offline_check.o: .\Algorithm\pid.h
 rm_template_gimbal\offline_check.o: App_task_Module\chassis_control.h
 rm_template_gimbal\offline_check.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\offline_check.o: App_task_Module\gimbal_control.h

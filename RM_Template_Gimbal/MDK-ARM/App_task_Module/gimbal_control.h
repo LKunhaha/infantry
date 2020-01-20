@@ -17,13 +17,10 @@
 
 /* 本模块向外部提供的数据类型定义--------------------------------------------*/
 typedef struct{
-		//int16_t expect;
-		int32_t expect;
+		int32_t expect;           //最终pid运算值
 		uint8_t	step;
 		uint8_t mode;
-		int32_t expect_pc;
-		int32_t expect_remote;
-		int32_t expect_remote_last;
+		int32_t expect_pc;        //视觉设定值
     int16_t err;
 } Pos_Set;
 
@@ -39,6 +36,7 @@ extern int8_t gimbal_disable_flg;
 extern Gimbal_Status_t gimbal_status;
 /* 本模块向外部提供的接口函数原型声明----------------------------------------*/
 void Gimbal_Task(void const * argument);
+void Gimbal_angle_Conversion(moto_measure_t *ptr);
 
 /* 全局配置区----------------------------------------------------------------*/
 

@@ -45,10 +45,28 @@ void Remote_Data_Task(void const * argument)
 			
 			Remote_Ctrl();   //接收机原始数据处理
 			
-			Send_MiniPC_Data(gimbal_status.minipc_color,gimbal_status.minipc_mode,yaw_get.offset_angle,pit_get.offset_angle,0);
+//			Send_MiniPC_Data(gimbal_status.minipc_color,gimbal_status.minipc_mode,yaw_get.offset_angle,pit_get.offset_angle,0);
 			CAN_Send_Remote(&hcan2,RC_Ctl.key.v,RC_Ctl.rc.ch0,RC_Ctl.rc.ch1,RC_Ctl.rc.s1,RC_Ctl.rc.s2);
 			
-			RemoteControlProcess();   //遥控器数据处理
+			switch(RC_Ctl.rc.s1)  //左拨钮
+			{
+					case 1: //上
+					{
+						gimbal_status.remote_mode = 0;
+						MouseKeyControlProcess();
+					}break; 
+					case 2: //下
+					{
+						gimbal_status.remote_mode = 0;
+				    RemoteControlProcess();
+					}break; 
+					case 3: //中
+					{
+						gimbal_status.remote_mode = 1;
+					}break;  
+					default :break;
+			}
+		
 		}
 		
 		osDelayUntil(&xLastWakeTime, REMOTE_PERIOD);
@@ -69,60 +87,39 @@ void RemoteControlProcess()
 			case 1: //上
 			{
 				 gimbal_status.gimbal_mode = 1;            //陀螺仪模式
-				 Set_AX6(2,819,0x3ff);       //逆时针角度   240° 关
-//						RemoteControlProcess();
+//				 Set_AX6(2,819,0x3ff);       //逆时针角度   240° 关
+//				gimbal_status.bopan_mode = bopan_Lianfa_mode;
 			}break; 
 			case 2: //下
 			{
-				 Set_AX6(2,819,0x3ff);       //逆时针角度   240° 关
-			   gimbal_status.gimbal_mode = 3;            //编码器模式  拨盘调试置为编码器模式
-//						MouseKeyControlProcess();
+				 gimbal_status.gimbal_mode = 2;            //编码器模式  
+//				 Set_AX6(2,819,0x3ff);       //逆时针角度   240° 关
+				gimbal_status.bopan_mode = bopan_Stop;
+			   
 			}break; 
 			case 3: //中
 			{
-				 Set_AX6(2,512,0x3ff);       //逆时针角度   150°
-//						hard_brak();
+//				 gimbal_status.gimbal_mode = 3;            //小陀螺模式
+//				 Set_AX6(2,512,0x3ff);       //逆时针角度   150°
+//         gimbal_status.bopan_mode = bopan_danfa_mode;
+				
+				gimbal_status.gimbal_mode = 4;    //视觉模式
+				gimbal_status.minipc_mode = 1;    //自瞄模式
 			}break; 
 			default :break;
 		}					
         
-    if(gimbal_status.gimbal_mode == 1 )            //陀螺仪模式
+    if((gimbal_status.gimbal_mode == 1) || (gimbal_status.gimbal_mode == 3))            //陀螺仪模式
 		{
-				pit_set.expect_remote = pit_set.expect_remote +(0x400-RC_Ctl.rc.ch3)/20;	  //pit_set.expect_remote不受模式影响
-				yaw_tly_set.expect_remote = yaw_tly_set.expect_remote +(0x400-RC_Ctl.rc.ch2)/20;	
+			  yaw_tly_set.expect = yaw_tly_set.expect + (RC_Ctl.rc.ch2 - 0x400) / 10;	
+				pit_set.expect = pit_set.expect + (0x400 - RC_Ctl.rc.ch3) / 20;	              //pit_set.expect_remote不受模式影响		
 			
-		}else if(gimbal_status.gimbal_mode == 3)       // 编码器模式  ||  超限
+		}else if(gimbal_status.gimbal_mode == 2 )       // 编码器模式  
 		{
-				pit_set.expect_remote = pit_set.expect_remote +(0x400-RC_Ctl.rc.ch3)/20;	
-				yaw_set.expect = yaw_set.expect +(0x400-RC_Ctl.rc.ch2)/20;
+				yaw_set.expect = yaw_set.expect + (RC_Ctl.rc.ch2 - 0x400) / 10;
+		  	pit_set.expect = pit_set.expect + (0x400 - RC_Ctl.rc.ch3) / 20;	 
 		}
-
-	  if(RC_Ctl.rc.s1 == 1)            //上
-		{    
 			
-				 gimbal_status.bopan_mode = 1;             //单发              
-//						 HAL_GPIO_WritePin(GPIOG,LASTER_Pin,GPIO_PIN_RESET);//激光关闭
-
-		}
-		else if(RC_Ctl.rc.s1 == 2)       //下
-		{
-	//		gimbal_status.gimbal_mode = 3;              //编码器模式
-//                Shoot.mode=3;
-//                if(shoot.out == 115) 
-//              gimbal_status.bopan_mode=3;    
-		
-				gimbal_status.bopan_mode = 3;               //连发
-//           Set_AX6(2,512,0x3ff);    //逆时针角度   150°
-		}else                             //中
-		{
-			  gimbal_status.bopan_mode = 0;                 //停止
-//							HAL_GPIO_WritePin(GPIOG,LASTER_Pin,GPIO_PIN_SET);//激光开启
-//							gimbal_status.bopan_mode = 0;
-//							gimbal_status.gimbal_mode = 1;     //陀螺仪模式
-		    gimbal_status.minipc_mode = 0;
-		}		
-		
-					
 }
 
 /***************************************************************************************
@@ -135,7 +132,7 @@ void RemoteControlProcess()
 void MouseKeyControlProcess()
 {
 		
-                
+    gimbal_status.gimbal_mode = 2;  
                    
 }
 
@@ -173,6 +170,7 @@ void MiniPC_Data_task(void const * argument)
 	minipc_rx.angle_yaw  = 0;
   uint32_t NotifyValue;
 	Minipc_Pid_Init();
+	osDelay(4000);//延时4000ms，等待云台任务进入正常运转后才开始视觉数据接收
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 		frist_angle  =  pit_get.total_angle-pit_set.expect_pc;
@@ -187,67 +185,57 @@ void MiniPC_Data_task(void const * argument)
 			{
 					case 1 ://自瞄
 					{
- 
-						if(my_abs(minipc_rx.angle_yaw)>640 || my_abs(minipc_rx.angle_pit)>360)  //pc数据异常
+						if(my_abs(minipc_rx.angle_yaw) > 640 || my_abs(minipc_rx.angle_pit) > 360)  //pc数据异常
 						{
 							
 						}else
 						{
-//								      pid_calc(&pid_minipc_yaw,minipc_rx.angle_yaw,0);
-//                      pid_calc(&pid_minipc_pit,minipc_rx.angle_pit,0);
-
-//                      yaw_zm_set.expect_pc = (pid_minipc_yaw.pos_out)+tly.final_angle;
-//											pit_zm_set.expect_pc = (-pid_minipc_pit.pos_out)+pit_get.total_angle;
-
-//                      yaw_zm_set.expect_pc += (-minipc_rx.angle_yaw);
-//											pit_zm_set.expect_pc += (minipc_rx.angle_pit);                   
-							
-						  	minipc_rx.angle_yaw = 0;
-						  	minipc_rx.angle_pit = 0;
-//                      
-//                      if(yaw_zm_set.expect_pc>500)yaw_zm_set.expect_pc=500;
-//                      else if(yaw_zm_set.expect_pc<-500)yaw_zm_set.expect_pc=-500;
-//                      
-//                      if(pit_zm_set.expect_pc>500)pit_zm_set.expect_pc=500;
-//                      else if(yaw_zm_set.expect_pc<-500)yaw_zm_set.expect_pc=-500;
-							
-							/*  调准心测试使用
-							Shoot.mode = 3; //先启动抹茶轮 设置不同的速度
-							if( shoot.out == 112 ) gimbal_status.bopan_mode  = 1;
-							*/
+								if(minipc_rx.state_flag == 1)    //视觉检测到瞄准至目标附近后，不再调整位置
+								{
+									yaw_set.expect_pc -= minipc_rx.angle_yaw;    //yaw右边为负
+									pit_set.expect_pc -= minipc_rx.angle_pit;    //               
+									
+								}else if(minipc_rx.state_flag == 2)
+								{
+									yaw_set.expect_pc -= minipc_rx.angle_yaw;    //yaw右边为负
+									pit_set.expect_pc -= minipc_rx.angle_pit;    // 
+									gimbal_status.bopan_mode = bopan_danfa_mode;
+								}      
 						}
+						minipc_rx.angle_yaw = 0;
+						minipc_rx.angle_pit = 0; 
 					}break ;
 					
 					case 2 ://打符						
 					{
 						
-						if(my_abs(minipc_rx.angle_yaw)>500 || my_abs(minipc_rx.angle_yaw)>500)  //pc数据异常
-						{
-						}else
-						{
-								Shoot_status.remote_mode = 1; //先启动抹茶轮
-								if( frist_flag == 0)
-								{
-										if(shoot.out == 128 )  frist_flag=1;
-								
-										yaw_set.expect_pc = minipc_rx.angle_yaw;
-										pit_set.expect_pc = minipc_rx.angle_pit;
-								}
-							
-								if(minipc_rx.state_flag)//检测到不同装甲块时立即调准位置
-								{
-										yaw_set.expect_pc = minipc_rx.angle_yaw;
-										pit_set.expect_pc = minipc_rx.angle_pit;
-								}
-								else if( frist_flag )//误差不能设置的太大
-								{
-										yaw_set.expect_pc = minipc_rx.angle_yaw ;               
-										pit_set.expect_pc = minipc_rx.angle_pit ;
-										gimbal_status.bopan_mode = 1;
-								}else     
-										gimbal_status.bopan_mode = 0;
-								
-						 }break;
+//						if(my_abs(minipc_rx.angle_yaw)>500 || my_abs(minipc_rx.angle_yaw)>500)  //pc数据异常
+//						{
+//						}else
+//						{
+//								Shoot_status.remote_mode = 1; //先启动抹茶轮
+//								if( frist_flag == 0)
+//								{
+//										if(shoot.out == 128 )  frist_flag=1;
+//								
+//										yaw_set.expect_pc = minipc_rx.angle_yaw;
+//										pit_set.expect_pc = minipc_rx.angle_pit;
+//								}
+//							
+//								if(minipc_rx.state_flag)//检测到不同装甲块时立即调准位置
+//								{
+//										yaw_set.expect_pc = minipc_rx.angle_yaw;
+//										pit_set.expect_pc = minipc_rx.angle_pit;
+//								}
+//								else if( frist_flag )//误差不能设置的太大
+//								{
+//										yaw_set.expect_pc = minipc_rx.angle_yaw ;               
+//										pit_set.expect_pc = minipc_rx.angle_pit ;
+//										gimbal_status.bopan_mode = 1;
+//								}else     
+//										gimbal_status.bopan_mode = 0;
+//								
+//						 }break;
 					 }
 					 default : break;
 				}

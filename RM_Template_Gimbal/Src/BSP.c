@@ -149,7 +149,7 @@ void BSP_Init(void)
 	HAL_ADC_Start(&hadc1);
 	
 	/*摩擦轮*/
-	GUN_Init();
+//	GUN_Init();
 	
 	/*板载imu*/
 	MPU6500_Init();
@@ -157,6 +157,9 @@ void BSP_Init(void)
 	/*断线检测*/
 	SystemState_Inite();
 	
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+	__HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE);
+	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);
 	/*使能串口的DMA接收，开启串口空闲中断*/
 	Bsp_UART_Receive_IT(&huart1,USART1_RX_DATA,SizeofRemote); //这一步的目的是创建一段接受内存
 	Bsp_UART_Receive_IT(&huart8,UART8_RX_DATA,SizeofJY901);

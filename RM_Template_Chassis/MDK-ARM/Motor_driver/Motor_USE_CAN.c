@@ -14,11 +14,10 @@
 #include "Motor_USE_CAN.h"
 #include "protocol.h"
 #include "SystemState.h"
-#include "communication.h "
 /* 内部自定义数据类型 --------------------------------------------------------*/
 
 /* 内部宏定义 ----------------------------------------------------------------*/
-#define ABS(x)	( (x>0) ? (x) : (-x) )
+
 /* 任务相关信息定义-----------------------------------------------------------*/
 
 /* 内部常量定义---------------------------------------------------------------*/
@@ -27,7 +26,6 @@
 /*********************底盘电机的参数变量***************************/
 moto_measure_t   moto_chassis_get[4] = {0};//4 个 3508
 moto_measure_t   moto_gimbal_get;
-Gimbal_Status_t   gimbal_status;
 RC_Ctl_t  RC_Ctl; //遥控数据
 /* 外部函数原型声明 ----------------------------------------------------------*/
 
@@ -187,7 +185,7 @@ void CAN_Send_Chassis_status( CAN_HandleTypeDef * hcan)
 			CANSend_status_Data.DLC = 0x08;
 			CANSend_status_Data.IDE = CAN_ID_STD;
 			CANSend_status_Data.RTR = CAN_RTR_DATA;
-			CANSend_status_Data.StdId = 0x110;
+			CANSend_status_Data.StdId = 0x170;
 
 			CAN_TX_DATA[0] = 0;
 			CAN_TX_DATA[1] = 0;
@@ -209,7 +207,7 @@ void CAN_Send_Minipc( CAN_HandleTypeDef * hcan)
 			CANSend_Minipc_Data.DLC = 0x08;
 			CANSend_Minipc_Data.IDE = CAN_ID_STD;
 			CANSend_Minipc_Data.RTR = CAN_RTR_DATA;
-			CANSend_Minipc_Data.StdId = 0x110;
+			CANSend_Minipc_Data.StdId = 0x180;
 
 			CAN_TX_DATA[0] = 0;
 			CAN_TX_DATA[1] = 0;
@@ -234,10 +232,10 @@ void CAN_Get_Remote(uint8_t CAN_RX_date[])   //接收遥控器信息
 }
 
 
-void CAN_Get_Gimbal(moto_measure_t * moto_gimbal_get,uint8_t CAN_RX_date[])
+void CAN_Get_Gimbal(uint8_t CAN_RX_date[])   //接收云台信息
 {
-	    moto_gimbal_get->angle = (int16_t)(CAN_RX_date[0]<<8 | CAN_RX_date[1]) ;
-	    moto_gimbal_get->total_angle  =(int16_t) (CAN_RX_date[2]<<8 | CAN_RX_date[3]) ;
+	    moto_gimbal_get.angle = (int16_t)(CAN_RX_date[0]<<8 | CAN_RX_date[1]) ;
+	    moto_gimbal_get.total_angle  =(int16_t) (CAN_RX_date[2]<<8 | CAN_RX_date[3]) ;
       gimbal_status.minipc_mode =  (uint8_t)CAN_RX_date[4];         //flag----minipc.mode
       gimbal_status.gimbal_mode = (uint8_t)CAN_RX_date[5];         //flag1----gimbal.mode
       gimbal_status.remote_mode = (uint8_t)CAN_RX_date[6];       //remote.mode

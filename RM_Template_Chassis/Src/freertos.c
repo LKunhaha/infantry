@@ -71,6 +71,7 @@ extern void MiniPC_Data_task(void const * argument);
 extern void Led_Task(void const * argument);
 extern void vOutLineCheck_Task(void const *argument);
 extern void Check_Task(void const *argument);
+extern void Chassis_Contrl_Task(void const * argument);
 /* USER CODE END FunctionPrototypes */
 
 
@@ -129,6 +130,10 @@ void MX_FREERTOS_Init(void) {
 	osThreadDef(Task1, testTask, osPriorityNormal, 0, 256);                         //测试任务，内容自定
 	testTaskHandle = osThreadCreate(osThread(Task1), NULL);
 
+
+  osThreadDef(chassisTask, Chassis_Contrl_Task, osPriorityHigh, 0, 256);          //遥控器数据处理
+	RemoteDataTaskHandle = osThreadCreate(osThread(chassisTask), NULL);
+	
 	osThreadDef(RemoteDataTask, Remote_Data_Task, osPriorityHigh, 0, 256);          //遥控器数据处理
 	RemoteDataTaskHandle = osThreadCreate(osThread(RemoteDataTask), NULL);
 
@@ -137,14 +142,14 @@ void MX_FREERTOS_Init(void) {
 
 
   /***********断线检测**************/
-	osThreadDef(LedTask, Led_Task, osPriorityAboveNormal, 0, 256);                  //根据模块断线标志进行亮灯处理
-	LedTaskHandle = osThreadCreate(osThread(LedTask), NULL);
-	
-	osThreadDef(CheckTask, Check_Task, osPriorityNormal, 0, 128);                   //根据任务断线标志进行处理
-	CheckTaskHandle = osThreadCreate(osThread(CheckTask), NULL);
-	
-	osThreadDef(vOutLineCheckTask, vOutLineCheck_Task, osPriorityNormal, 0, 128);   //其他任务断线检测、模块（电机、遥控器等）掉线检测及设置断线标志
-	vOutLineCheckTaskHandle = osThreadCreate(osThread(vOutLineCheckTask), NULL);
+//	osThreadDef(LedTask, Led_Task, osPriorityAboveNormal, 0, 256);                  //根据模块断线标志进行亮灯处理
+//	LedTaskHandle = osThreadCreate(osThread(LedTask), NULL);
+//	
+//	osThreadDef(CheckTask, Check_Task, osPriorityNormal, 0, 128);                   //根据任务断线标志进行处理
+//	CheckTaskHandle = osThreadCreate(osThread(CheckTask), NULL);
+//	
+//	osThreadDef(vOutLineCheckTask, vOutLineCheck_Task, osPriorityNormal, 0, 128);   //其他任务断线检测、模块（电机、遥控器等）掉线检测及设置断线标志
+//	vOutLineCheckTaskHandle = osThreadCreate(osThread(vOutLineCheckTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }

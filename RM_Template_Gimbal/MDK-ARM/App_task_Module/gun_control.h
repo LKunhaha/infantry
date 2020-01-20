@@ -51,9 +51,9 @@ volatile typedef struct
 #define Mocha_PERIOD  200
 #define BLOCK_TIME 2000
 #define REVERSE_TIME 2000
-#define DELAY_TIME  1000
+#define DELAY_TIME  100
 
-#define Limit_switch_Control 1      //0为无限位开关控制，1为有限位开关控制
+#define Limit_switch_Control 0      //0为无限位开关控制，1为有限位开关控制
 
 #define Mocha_Stop         0
 #define Mocha_danfa_mode   1

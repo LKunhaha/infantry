@@ -19,10 +19,10 @@
 /* 本模块向外部提供的宏定义--------------------------------------------------*/	 
 #define  NORMAL_SPEED_MAX 	1000
 #define  NORMAL_SPEED_MIN  -1000
-#define  ACC_SPEED    30 
+#define  ACC_SPEED    60 
 #define  DEC_SPEED    300 
 #define  press_times  20
-#define REMOTE_PERIOD 1       //遥控器的接收机数据发送周期为7ms
+#define REMOTE_PERIOD 7       //遥控器的接收机数据发送周期为7ms
 #define MINIPC_PERIOD 10
 	 
 #define VAL_LIMIT(val, min, max)\

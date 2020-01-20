@@ -26,6 +26,7 @@
 #include "cmsis_os.h"
 #include "SystemState.h"
 #include "Motor_USE_CAN.h"
+#include "communication.h "
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -40,7 +41,8 @@ uint8_t CAN2_RX_date[8];
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
- 
+extern  osThreadId RemoteDataTaskHandle;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -353,25 +355,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
+	static  BaseType_t  pxHigherPriorityTaskWoken;
 	if(hcan == &hcan1)
 	{
 		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN1_Rx_Header, CAN1_RX_date);
-		
-	}else if(hcan == &hcan2)
-	{
-		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN2_Rx_Header, CAN2_RX_date);
-		
-		switch(CAN2_Rx_Header.StdId)
+		switch(CAN1_Rx_Header.StdId)
 		{
 			case CAN_3508Moto1_ID:     
 			{
 					if(moto_chassis_get[0].msg_cnt++ <= 50)	
 					{
-						 get_moto_offset(&moto_chassis_get[0], CAN2_RX_date);
+						 get_moto_offset(&moto_chassis_get[0], CAN1_RX_date);
 					}else
 					{		
 						 moto_chassis_get[0].msg_cnt = 51;	
-						 get_moto_measure_3508(&moto_chassis_get[0], CAN2_RX_date);
+						 get_moto_measure_3508(&moto_chassis_get[0], CAN1_RX_date);
 						 RefreshDeviceOutLineTime(Motor1_NO);
 					}
 			}break;
@@ -380,11 +378,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{
 					if(moto_chassis_get[1].msg_cnt++ <= 50)	
 					{
-						 get_moto_offset(&moto_chassis_get[1], CAN2_RX_date);
+						 get_moto_offset(&moto_chassis_get[1], CAN1_RX_date);
 					}else
 					{		
 						 moto_chassis_get[1].msg_cnt = 51;	
-						 get_moto_measure_3508(&moto_chassis_get[1], CAN2_RX_date);
+						 get_moto_measure_3508(&moto_chassis_get[1], CAN1_RX_date);
 						 RefreshDeviceOutLineTime(Motor2_NO);
 				  }
 			}break;
@@ -393,11 +391,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{		
 					if(moto_chassis_get[2].msg_cnt++ <= 50)	
 					{
-						 get_moto_offset(&moto_chassis_get[2], CAN2_RX_date);
+						 get_moto_offset(&moto_chassis_get[2], CAN1_RX_date);
 					}else
 					{		
 						 moto_chassis_get[2].msg_cnt = 51;	
-						 get_moto_measure_3508(&moto_chassis_get[2], CAN2_RX_date);
+						 get_moto_measure_3508(&moto_chassis_get[2], CAN1_RX_date);
 						 RefreshDeviceOutLineTime(Motor3_NO);
 					}
 			}break;
@@ -406,15 +404,45 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{			
 					if(moto_chassis_get[3].msg_cnt++ <= 50)	
 					{
-						 get_moto_offset(&moto_chassis_get[3], CAN2_RX_date);
+						 get_moto_offset(&moto_chassis_get[3], CAN1_RX_date);
 					}else
 					{		
 						 moto_chassis_get[3].msg_cnt = 51;	
-						 get_moto_measure_3508(&moto_chassis_get[3], CAN2_RX_date);
+						 get_moto_measure_3508(&moto_chassis_get[3], CAN1_RX_date);
 						 RefreshDeviceOutLineTime(Motor4_NO);
 					}
 			}break;
+			default:break;
 			
+		}
+	}else if(hcan == &hcan2)
+	{
+		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN2_Rx_Header, CAN2_RX_date);
+		
+		switch(CAN2_Rx_Header.StdId)
+		{
+			case 0x110:     
+			{
+					CAN_Get_Remote(CAN2_RX_date);
+				  vTaskNotifyGiveFromISR(RemoteDataTaskHandle,&pxHigherPriorityTaskWoken);
+		      portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);	
+			}break;
+			
+			case 0x119:     
+			{
+					
+			}break;
+			
+			case 0x120:     
+			{
+					CAN_Get_Gimbal(CAN2_RX_date);
+			}break;
+			
+			case 0x130:    
+			{		
+					
+			}break;
+	    default:break;
 		}
 		
 	}

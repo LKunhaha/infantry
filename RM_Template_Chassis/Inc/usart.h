@@ -45,7 +45,11 @@ void MX_USART3_UART_Init(void);
 void MX_USART6_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void Usart_SendByte( UART_HandleTypeDef *huart,uint8_t ch );
+void Usart_SendArray( UART_HandleTypeDef *huart, uint8_t *array, uint16_t num);
+void vcan_sendware(uint8_t *wareaddr, uint32_t waresize);
+HAL_StatusTypeDef Bsp_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+HAL_StatusTypeDef Bsp_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -60,9 +60,9 @@ rm_template_gimbal\gun_control.o: ../Inc/can.h
 rm_template_gimbal\gun_control.o: .\Communication\communication.h
 rm_template_gimbal\gun_control.o: ../Inc/spi.h
 rm_template_gimbal\gun_control.o: ../Inc/usart.h
+rm_template_gimbal\gun_control.o: .\Algorithm\pid.h
 rm_template_gimbal\gun_control.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\gun_control.o: ../Inc/tim.h
-rm_template_gimbal\gun_control.o: .\Algorithm\pid.h
 rm_template_gimbal\gun_control.o: .\Communication\minipc.h
 rm_template_gimbal\gun_control.o: .\Communication\communication.h 
 rm_template_gimbal\gun_control.o: .\Algorithm\SystemState.h

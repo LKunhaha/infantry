@@ -52,6 +52,7 @@ rm_template_gimbal\bsp.o: .\Communication\communication.h
 rm_template_gimbal\bsp.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_gimbal\bsp.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_gimbal\bsp.o: .\Communication\communication.h
+rm_template_gimbal\bsp.o: .\Algorithm\pid.h
 rm_template_gimbal\bsp.o: .\Communication\minipc.h
 rm_template_gimbal\bsp.o: .\Algorithm\Power_restriction.h
 rm_template_gimbal\bsp.o: .\App_task_Module\data_processing.h
@@ -69,7 +70,6 @@ rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/tim
 rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-rm_template_gimbal\bsp.o: .\Algorithm\pid.h
 rm_template_gimbal\bsp.o: .\Algorithm\protocol.h
 rm_template_gimbal\bsp.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rm_template_gimbal\bsp.o: .\App_task_Module\gun_control.h

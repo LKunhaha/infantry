@@ -8,7 +8,6 @@
 #include "gimbal_control.h"
 
 /* 内部变量------------------------------------------------------------------*/
-SystemStateDef Remote;
 SystemStateDef Gimbal_Motor;
 SystemStateDef JY61;
 
@@ -33,12 +32,12 @@ void Led_Task(void const * argument)
 				if((SystemState.OutLine_Flag & 0x01))//遥控器掉线
 				{
 						HAL_GPIO_TogglePin(GPIOG,LED1_Pin);
-					  gimbal_status.remote_mode = 1;
+//					  gimbal_status.remote_mode = 1;
 					  printf("remote over");
 						osDelayUntil(&xLastWakeTime,200);		  
 				}else  
 				{
-						gimbal_status.remote_mode=0;
+//						gimbal_status.remote_mode=0;
 						HAL_GPIO_WritePin(GPIOG,LED1_Pin,GPIO_PIN_SET);
 				}
 				

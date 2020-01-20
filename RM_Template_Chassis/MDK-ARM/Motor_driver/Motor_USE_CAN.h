@@ -5,6 +5,9 @@
 #include "stm32f4xx_hal.h"
 #include "stdint.h"
 #include "can.h"
+#include "communication.h "
+#include "chassis_control.h"
+#include "pid.h"
 
 #define FILTER_BUF_LEN		5
 
@@ -40,7 +43,7 @@ typedef struct{
 
 
 extern moto_measure_t   moto_chassis_get[];
-
+extern moto_measure_t   moto_gimbal_get;
 
 void Chassis_Motor( CAN_HandleTypeDef * hcan,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);
 void get_moto_measure_3508(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
@@ -50,6 +53,6 @@ void CAN_Send_Chassis_status( CAN_HandleTypeDef * hcan);
 void CAN_Send_Minipc( CAN_HandleTypeDef * hcan);
 
 void CAN_Get_Remote(uint8_t CAN_RX_date[]);
-void CAN_Get_Gimbal(moto_measure_t * gimbal_get,uint8_t CAN_RX_date[]);
+void CAN_Get_Gimbal(uint8_t CAN_RX_date[]);
 
 #endif

@@ -10,7 +10,7 @@
   函数列表   :
 *******************************************************************************/
 /* 包含头文件 ----------------------------------------------------------------*/
-#include "communication.h "
+#include "communication.h"
 #include "Power_restriction.h"
 
 
@@ -48,6 +48,9 @@ JY901_t   ptr_jy901_t_pit =  {0};
 JY901_t  	ptr_jy901_t_angular_velocity = {0};
 
 XTLY tly;
+
+//云台信息
+Gimbal_Status_t gimbal_status;
 
 //mpu6500
 uint8_t MPU_id = 0;
@@ -160,7 +163,7 @@ void JY901_Data_Pro()
 				ptr_jy901_t_yaw.angle_round++;
 			else if(ptr_jy901_t_yaw.err > 180)  
 				ptr_jy901_t_yaw.angle_round--;
-			ptr_jy901_t_yaw.final_angle = (ptr_jy901_t_yaw.angle_round*360+ptr_jy901_t_yaw.JY901_angle-ptr_jy901_t_yaw.first_angle) * 22.75f;
+			ptr_jy901_t_yaw.total_angle = (ptr_jy901_t_yaw.angle_round*360+ptr_jy901_t_yaw.JY901_angle-ptr_jy901_t_yaw.first_angle) * 22.75f;
 			
 			ptr_jy901_t_pit.err = ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.JY901_angle_last;
 			if(ptr_jy901_t_pit.err < -180) 
@@ -168,8 +171,8 @@ void JY901_Data_Pro()
 			else if(ptr_jy901_t_pit.err > 180)
 				ptr_jy901_t_pit.angle_round--;
 			//计算最终结果
-		  ptr_jy901_t_pit.final_angle = (ptr_jy901_t_pit.angle_round*360+ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
-//		  ptr_jy901_t_pit.final_angle=(ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
+		  ptr_jy901_t_pit.total_angle = (ptr_jy901_t_pit.angle_round*360+ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
+//		  ptr_jy901_t_pit.total_angle=(ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
 
 			}
 			else 

@@ -162,9 +162,9 @@ void JY901_Data_Pro()
 //		if(pritnf_JY901){    //调试用
 //			printf("gz=%f\n",ptr_jy901_t_yaw.JY901_angle);
 //    	float *ptr = NULL; //初始化指针
-//			ptr = &(ptr_jy901_t_yaw.final_angle);	
+//			ptr = &(ptr_jy901_t_yaw.total_angle);	
 //			/*用虚拟示波器，发送数据*/
-//			vcan_sendware((uint8_t *)ptr,sizeof(ptr_jy901_t_yaw.final_angle));
+//			vcan_sendware((uint8_t *)ptr,sizeof(ptr_jy901_t_yaw.total_angle));
 //		 }
 		if(ptr_jy901_t_yaw.times > 5)
 			{
@@ -174,7 +174,7 @@ void JY901_Data_Pro()
 				ptr_jy901_t_yaw.angle_round++;
 			else if(ptr_jy901_t_yaw.err > 180)  
 				ptr_jy901_t_yaw.angle_round--;
-			ptr_jy901_t_yaw.final_angle = (ptr_jy901_t_yaw.angle_round*360+ptr_jy901_t_yaw.JY901_angle-ptr_jy901_t_yaw.first_angle) * 22.75f;
+			ptr_jy901_t_yaw.total_angle = -(ptr_jy901_t_yaw.angle_round*360+ptr_jy901_t_yaw.JY901_angle-ptr_jy901_t_yaw.first_angle) * 22.75f;   //与电机正方向相反，所以取了负
 			
 			ptr_jy901_t_pit.err = ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.JY901_angle_last;
 			if(ptr_jy901_t_pit.err < -180) 
@@ -182,7 +182,7 @@ void JY901_Data_Pro()
 			else if(ptr_jy901_t_pit.err > 180)
 				ptr_jy901_t_pit.angle_round--;
 			//计算最终结果
-		  ptr_jy901_t_pit.final_angle = (ptr_jy901_t_pit.angle_round*360+ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
+		  ptr_jy901_t_pit.total_angle = (ptr_jy901_t_pit.angle_round*360+ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
 //		  ptr_jy901_t_pit.final_angle=(ptr_jy901_t_pit.JY901_angle-ptr_jy901_t_pit.first_angle);
 			i = (xWakeTime - xLastWakeTime);
 		  xLastWakeTime =	xWakeTime;

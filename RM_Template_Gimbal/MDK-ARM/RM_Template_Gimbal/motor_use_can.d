@@ -45,6 +45,7 @@ rm_template_gimbal\motor_use_can.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\stdio.
 rm_template_gimbal\motor_use_can.o: .\Communication\communication.h
 rm_template_gimbal\motor_use_can.o: ../Inc/spi.h
 rm_template_gimbal\motor_use_can.o: ../Inc/usart.h
+rm_template_gimbal\motor_use_can.o: .\Algorithm\pid.h
 rm_template_gimbal\motor_use_can.o: .\Algorithm\protocol.h
 rm_template_gimbal\motor_use_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 rm_template_gimbal\motor_use_can.o: ../Inc/FreeRTOSConfig.h

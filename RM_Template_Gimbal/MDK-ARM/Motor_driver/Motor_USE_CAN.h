@@ -6,8 +6,10 @@
 #include "stdint.h"
 #include "can.h"
 #include "communication.h"
+#include "pid.h"
 
 #define FILTER_BUF_LEN		5
+
 
 typedef enum
 {
@@ -52,6 +54,7 @@ void Chassis_Motor( CAN_HandleTypeDef * hcan,int16_t iq1, int16_t iq2, int16_t i
 void Allocate_Motor(CAN_HandleTypeDef * hcan,int16_t value);
 void get_moto_measure_3508(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
 void get_moto_measure_6623(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
+void get_moto_measure_6020(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
 void get_moto_offset(moto_measure_t *ptr,uint8_t CAN_RX_date[]);
 void Cloud_Platform_Motor_jiaozhun(CAN_HandleTypeDef * hcan);
 void Cloud_Platform_Motor_Disable(CAN_HandleTypeDef * hcan);

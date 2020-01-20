@@ -56,9 +56,9 @@
 "rm_template_chassis\minipc.o"
 "rm_template_chassis\chassis_control.o"
 "rm_template_chassis\data_processing.o"
-"rm_template_chassis\gimbal_control.o"
 "rm_template_chassis\offline_check.o"
 "rm_template_chassis\other_tasks.o"
+"..\DSP_LIB\arm_cortexM4lf_math.lib"
 --library_type=microlib --strict --scatter "RM_Template_Chassis\RM_Template_Chassis.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

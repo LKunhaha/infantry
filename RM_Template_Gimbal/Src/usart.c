@@ -65,9 +65,9 @@ void vcan_sendware(uint8_t *wareaddr, uint32_t waresize)
     uint8_t cmdf[2] = {CMD_WARE, ~CMD_WARE};    //串口调试 使用的前命令
     uint8_t cmdr[2] = {~CMD_WARE, CMD_WARE};    //串口调试 使用的后命令
 
-    uart_putbuff(&huart3, cmdf, sizeof(cmdf));    //先发送前命令
-    uart_putbuff(&huart3, wareaddr, waresize);    //发送数据
-    uart_putbuff(&huart3, cmdr, sizeof(cmdr));    //发送后命令
+    uart_putbuff(&huart2, cmdf, sizeof(cmdf));    //先发送前命令
+    uart_putbuff(&huart2, wareaddr, waresize);    //发送数据
+    uart_putbuff(&huart2, cmdr, sizeof(cmdr));    //发送后命令
 }
 
 /******** 发送一个字符 *********/

@@ -97,7 +97,7 @@ typedef struct    //Íâ½ÓÍÓÂİÒÇ    ¿ÉÒÔ¸Ä³ÉÌ×ÓÃµç»ú²ÎÊıµÄ½á¹¹Ìåmoto_measure_t  _´
 	float JY901_angle_last;
 	float first_angle;
 	float angle_round;
-  float final_angle;
+  float total_angle;
   float last_final_angle;
 	float vx;
 	float vy;	
@@ -110,27 +110,27 @@ typedef struct    //Íâ½ÓÍÓÂİÒÇ    ¿ÉÒÔ¸Ä³ÉÌ×ÓÃµç»ú²ÎÊıµÄ½á¹¹Ìåmoto_measure_t  _´
 }JY901_t;
 ///////////////Ò£¿Ø/////////////////////
 typedef struct //Ò£¿ØÆ÷¼°¼üÊóÍ¨µÀ
-		{ 
-			int16_t x; //!< Byte 6-7 
-			int16_t y; //!< Byte 8-9 
-			int16_t z; //!< Byte 10-11 
-			uint8_t press_l; //!< Byte 12 
-			uint8_t press_r; //!< Byte 13 
-    }Mouse; 
-	typedef 	struct 
-		{ 
-	 uint16_t ch0; 
-	 uint16_t ch1; 
-	 uint16_t ch2; 
-	 uint16_t ch3; 
-	 uint8_t s1; 
-	 uint8_t s2; 
-		}Rc; 
+{ 
+	int16_t x; //!< Byte 6-7 
+	int16_t y; //!< Byte 8-9 
+	int16_t z; //!< Byte 10-11 
+	uint8_t press_l; //!< Byte 12 
+	uint8_t press_r; //!< Byte 13 
+}Mouse; 
+typedef 	struct 
+{ 
+  uint16_t ch0; 
+  uint16_t ch1; 
+  uint16_t ch2; 
+  uint16_t ch3; 
+  uint8_t s1; 
+  uint8_t s2; 
+}Rc; 
+typedef struct 
+{ 
+	uint16_t v; //!< Byte 14-15 
+}Key; 
 	typedef struct 
-		{ 
-		  uint16_t v; //!< Byte 14-15 
-		}Key; 
-		typedef struct 
 { 
   Rc rc; 
   Mouse mouse; 

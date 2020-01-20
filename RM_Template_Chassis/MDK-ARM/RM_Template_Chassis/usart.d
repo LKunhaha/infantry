@@ -14,8 +14,8 @@ rm_template_chassis\usart.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 rm_template_chassis\usart.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 rm_template_chassis\usart.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 rm_template_chassis\usart.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
-rm_template_chassis\usart.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
-rm_template_chassis\usart.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
+rm_template_chassis\usart.o: ..\DSP_LIB\include\arm_math.h
+rm_template_chassis\usart.o: ..\DSP_LIB\include\core_cm4.h
 rm_template_chassis\usart.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\string.h
 rm_template_chassis\usart.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\math.h
 rm_template_chassis\usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h

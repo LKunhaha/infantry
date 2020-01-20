@@ -13,8 +13,8 @@ rm_template_chassis\chassis_control.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 rm_template_chassis\chassis_control.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 rm_template_chassis\chassis_control.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 rm_template_chassis\chassis_control.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
-rm_template_chassis\chassis_control.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
-rm_template_chassis\chassis_control.o: D:\Users\MDK\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
+rm_template_chassis\chassis_control.o: ..\DSP_LIB\include\arm_math.h
+rm_template_chassis\chassis_control.o: ..\DSP_LIB\include\core_cm4.h
 rm_template_chassis\chassis_control.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\string.h
 rm_template_chassis\chassis_control.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\math.h
 rm_template_chassis\chassis_control.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
@@ -61,7 +61,7 @@ rm_template_chassis\chassis_control.o: ../Inc/main.h
 rm_template_chassis\chassis_control.o: D:\Users\MDK\ARM\ARMCC\Bin\..\include\stdio.h
 rm_template_chassis\chassis_control.o: .\Motor_driver\Motor_USE_CAN.h
 rm_template_chassis\chassis_control.o: ../Inc/can.h
-rm_template_chassis\chassis_control.o: App_task_Module\chassis_control.h
+rm_template_chassis\chassis_control.o: .\App_task_Module\chassis_control.h
 rm_template_chassis\chassis_control.o: .\Communication\atom_imu.h
 rm_template_chassis\chassis_control.o: ../Inc/gpio.h
 rm_template_chassis\chassis_control.o: .\Communication\decode.h
@@ -79,5 +79,6 @@ rm_template_chassis\chassis_control.o: .\Motor_driver\Motor_USE_TIM.h
 rm_template_chassis\chassis_control.o: ../Inc/tim.h
 rm_template_chassis\chassis_control.o: .\Communication\communication.h
 rm_template_chassis\chassis_control.o: .\Algorithm\Power_restriction.h
+rm_template_chassis\chassis_control.o: .\Algorithm\user_lib.h
 rm_template_chassis\chassis_control.o: .\Algorithm\SystemState.h
 rm_template_chassis\chassis_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

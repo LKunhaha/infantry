@@ -13,6 +13,8 @@
 #include "Motor_USE_CAN.h"
 #include "Power_restriction.h"
 #include "data_processing.h"
+#include "user_lib.h"
+#include "arm_math.h"
 /* 本模块向外部提供的数据类型定义--------------------------------------------*/	
 typedef struct
 {
@@ -22,15 +24,22 @@ typedef struct
 	char  flag;
 }moto3508_type;
 
-
+typedef struct
+{
+	uint8_t chassis_mode;
+	uint8_t chassis_flag;
+}Chassis_Status_t;
 /* 本模块向外部提供的宏定义--------------------------------------------------*/
 #define CHASSIS_PERIOD 5
 
+#define Middle_Angle 7462           //根据实际车的中间位置的yaw轴反馈角度来定
+
 /* 本模块向外部提供的接口常量声明--------------------------------------------*/
 extern moto3508_type  moto_3508_set; 
+extern uint32_t total_current;
 /* 本模块向外部提供的接口函数原型声明----------------------------------------*/
 void Chassis_Task(void const * argument);
-
+float Absolute_angle_Conversion(int32_t angle);
 /* 全局配置区----------------------------------------------------------------*/
 
 #ifdef __cplusplus

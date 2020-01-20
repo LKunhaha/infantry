@@ -25,6 +25,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 
+#define ABS(x)		((x>0)? (x): (-x)) 
+
 enum {
     LLAST	= 0,
     LAST 	= 1,
@@ -88,24 +90,7 @@ void PID_struct_init(
     float 	kd);
 
 float pid_calc(pid_t* pid, float fdb, float ref);
-float pid_sp_calc(pid_t* pid, float get, float set, float gyro);
 
-#if 0     //用不到
-extern pid_t pid_rol;
-extern pid_t pid_pit_omg;
-extern pid_t pid_yaw_omg;
-extern pid_t pid_yaw_alfa;
-extern pid_t pid_chassis_angle;
-extern pid_t pid_poke;
-extern pid_t pid_poke_omg;
-extern pid_t pid_imu_tmp;		//imu_temperature
-extern pid_t pid_cali_bby;	//big buff yaw
-extern pid_t pid_cali_bbp;
-extern pid_t pid_omg;
-extern pid_t pid_spd[4];
-extern pid_t pid_pos[4];
-#endif
-		
 extern pid_t pid_rub_spd[2];      //抹茶速度环		
 extern pid_t pid_yaw;
 extern pid_t pid_yaw_jy901;
