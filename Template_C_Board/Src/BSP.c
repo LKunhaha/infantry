@@ -16,6 +16,7 @@ void BSP_Init(void)
   MX_USART3_UART_Init();
   MX_USART6_UART_Init();
   MX_TIM10_Init();
+	delay_init();
 	
 	/*CAN¹ýÂËÆ÷*/
 	CanFilter_Init(&hcan1);

@@ -97,7 +97,7 @@ void limit_check()     //限位检测（放在掉线检测任务里）
 {
 		float time = GetSystemTimer();//当前系统时间
   
-	  if( HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) )   //限位标志
+	  if( HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_0) )   //限位标志
 		{
         Shoot_status.limit_level = 1;                  // 压限位开关  为高电平 
         shangdan_time = GetSystemTimer();

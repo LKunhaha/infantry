@@ -84,6 +84,8 @@ template_c_board\stm32f4xx_it.o: .\Algorithm\Power_restriction.h
 template_c_board\stm32f4xx_it.o: .\Communication\atom_imu.h
 template_c_board\stm32f4xx_it.o: ../Inc/gpio.h
 template_c_board\stm32f4xx_it.o: .\Communication\decode.h
+template_c_board\stm32f4xx_it.o: .\Algorithm\SystemState.h
+template_c_board\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 template_c_board\stm32f4xx_it.o: .\App_task_Module\INS_task.h
 template_c_board\stm32f4xx_it.o: .\Algorithm\user_lib.h
 template_c_board\stm32f4xx_it.o: .\Motor_driver\bmi088driver.h

@@ -170,7 +170,7 @@ void INS_task(void const *pvParameters)
         {
             accel_temp_update_flag &= ~(1 << IMU_UPDATE_SHFITS);
             BMI088_temperature_read_over(accel_temp_dma_rx_buf + BMI088_ACCEL_RX_BUF_DATA_OFFSET, &bmi088_real_data.temp);
-            imu_temp_control(bmi088_real_data.temp);
+//            imu_temp_control(bmi088_real_data.temp);
         }
 
 
@@ -192,13 +192,14 @@ void AHRS_init(fp32 quat[4], fp32 accel[3], fp32 mag[3])
 
 void AHRS_update(fp32 quat[4], fp32 time, fp32 gyro[3], fp32 accel[3], fp32 mag[3])
 {
-    MahonyAHRSupdate(quat, gyro[0], gyro[1], gyro[2], accel[0], accel[1], accel[2], mag[0], mag[1], mag[2]);
+//   MahonyAHRSupdate(quat, gyro[0], gyro[1], gyro[2], accel[0], accel[1], accel[2], mag[0], mag[1], mag[2]);
+	  MahonyAHRSupdate(quat, gyro[0], gyro[1], gyro[2], accel[0], accel[1], accel[2], 0.0, 0.0, 0.0); // Ç¿ÐÐÁùÖá½âËã
 }
 void get_angle(fp32 q[4], fp32 *yaw, fp32 *pitch, fp32 *roll)
 {
-    *yaw = atan2f(2.0f*(q[0]*q[3]+q[1]*q[2]), 2.0f*(q[0]*q[0]+q[1]*q[1])-1.0f);
-    *pitch = asinf(-2.0f*(q[1]*q[3]-q[0]*q[2]));
-    *roll = atan2f(2.0f*(q[0]*q[1]+q[2]*q[3]),2.0f*(q[0]*q[0]+q[3]*q[3])-1.0f);
+    *yaw = atan2f(2.0f*(q[0]*q[3]+q[1]*q[2]), 2.0f*(q[0]*q[0]+q[1]*q[1])-1.0f) * 57.296f;
+    *pitch = asinf(-2.0f*(q[1]*q[3]-q[0]*q[2])) * 57.296f;
+    *roll = atan2f(2.0f*(q[0]*q[1]+q[2]*q[3]),2.0f*(q[0]*q[0]+q[3]*q[3])-1.0f) * 57.296f;
 }
 
 /**

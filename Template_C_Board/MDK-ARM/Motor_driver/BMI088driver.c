@@ -405,7 +405,7 @@ void BMI088_accel_read_over(uint8_t *rx_buf, fp32 accel[3], fp32 *time)
 
 }
 
-void BMI088_gyro_read_over(uint8_t *rx_buf, fp32 gyro[3])
+void BMI088_gyro_read_over(uint8_t *rx_buf, fp32 gyro[3])      //获得的角速度单位为rad/s
 {
     int16_t bmi088_raw_temp;
     bmi088_raw_temp = (int16_t)((rx_buf[1]) << 8) | rx_buf[0];

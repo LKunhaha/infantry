@@ -79,6 +79,7 @@ extern volatile uint8_t mag_update_flag;
 extern volatile uint8_t imu_start_dma_flag;
 extern bmi088_real_data_t bmi088_real_data;
 extern ist8310_real_data_t ist8310_real_data;
+extern fp32 INS_angle[3];
 
 extern void imu_cmd_spi_dma(void);
 

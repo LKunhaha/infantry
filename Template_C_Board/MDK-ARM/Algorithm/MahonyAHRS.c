@@ -51,7 +51,7 @@ void MahonyAHRSupdate(float q[4], float gx, float gy, float gz, float ax, float 
 	float qa, qb, qc;
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
-	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {
+	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {    //若磁力计数据为零则进行六轴解算
 		MahonyAHRSupdateIMU(q, gx, gy, gz, ax, ay, az);
 		return;
 	}
@@ -90,7 +90,7 @@ void MahonyAHRSupdate(float q[4], float gx, float gy, float gz, float ax, float 
         bz = 2.0f * (mx * (q1q3 - q0q2) + my * (q2q3 + q0q1) + mz * (0.5f - q1q1 - q2q2));
 
 		// Estimated direction of gravity and magnetic field
-		halfvx = q1q3 - q0q2;
+		halfvx = q1q3 - q0q2;        //重力分量提取
 		halfvy = q0q1 + q2q3;
 		halfvz = q0q0 - 0.5f + q3q3;
         halfwx = bx * (0.5f - q2q2 - q3q3) + bz * (q1q3 - q0q2);
@@ -98,13 +98,13 @@ void MahonyAHRSupdate(float q[4], float gx, float gy, float gz, float ax, float 
         halfwz = bx * (q0q2 + q1q3) + bz * (0.5f - q1q1 - q2q2);  
 	
 		// Error is sum of cross product between estimated direction and measured direction of field vectors
-		halfex = (ay * halfvz - az * halfvy) + (my * halfwz - mz * halfwy);
+		halfex = (ay * halfvz - az * halfvy) + (my * halfwz - mz * halfwy);   //三个方向的误差
 		halfey = (az * halfvx - ax * halfvz) + (mz * halfwx - mx * halfwz);
 		halfez = (ax * halfvy - ay * halfvx) + (mx * halfwy - my * halfwx);
 
 		// Compute and apply integral feedback if enabled
 		if(twoKi > 0.0f) {
-			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki
+			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki  对误差进行积分运算
 			integralFBy += twoKi * halfey * (1.0f / sampleFreq);
 			integralFBz += twoKi * halfez * (1.0f / sampleFreq);
 			gx += integralFBx;	// apply integral feedback

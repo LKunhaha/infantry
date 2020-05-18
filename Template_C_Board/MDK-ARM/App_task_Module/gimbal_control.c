@@ -3,7 +3,7 @@
 #include "Power_restriction.h"
 #include "SystemState.h"
 #include "user_lib.h"
-
+#include "INS_task.h"
 /* 内部变量------------------------------------------------------------------*/
 static  int16_t Yaw_Current_Value = 0;
 static  int16_t Pitch_Current_Value = 0;
@@ -46,7 +46,7 @@ pid_t pid_pit_zimiao_spd = {0};
 	**************************************************************
 **/
 
-void gimbal_pid_init(void)   
+void gimbal_pid_init(void)     //由于控制周期由5ms变为1ms，I值应该缩小5倍
 {
 	
 	 PID_struct_init(&pid_yaw, POSITION_PID, 550, 350, 1.15f, 0.033f, 0.0f);              //550, 350, 1.15f, 0.033f, 0.0f  
@@ -157,8 +157,8 @@ void Gimbal_Task(void const * argument)
 			{	
 				case 1: //陀螺仪模式
 				{     
-//							pid_calc(&pid_yaw_jy901, ptr_jy901_t_yaw.total_angle, yaw_tly_set.expect);  
-							pid_calc(&pid_yaw_jy901_spd, (imu_data.gx)/16.4, pid_yaw_jy901.pos_out);
+							pid_calc(&pid_yaw_jy901, INS_angle[0], yaw_tly_set.expect);       //暂时只修改这一部分，其他部分后续修改
+							pid_calc(&pid_yaw_jy901_spd, bmi088_real_data.gyro[0] * 57.3, pid_yaw_jy901.pos_out);
 					    Yaw_Current_Value = pid_yaw_jy901_spd.pos_out;
 					
 	            pid_calc(&pid_pit, pit_get.total_angle, pit_set.expect);

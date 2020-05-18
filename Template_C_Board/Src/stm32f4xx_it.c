@@ -26,6 +26,7 @@
 #include "cmsis_os.h"
 #include "communication.h"
 #include "gimbal_control.h"
+#include "SystemState.h"
 #include "Motor_USE_CAN.h"
 #include "Motor_USE_TIM.h"
 #include "tim.h"
@@ -449,7 +450,7 @@ void USART3_IRQHandler(void)
 	if((tmp1 != RESET) && (tmp2 != RESET))
   { 
    	__HAL_DMA_DISABLE(&hdma_usart3_rx);
-//	 	RefreshDeviceOutLineTime(Remote_NO);
+	 	RefreshDeviceOutLineTime(Remote_NO);
 		
 		DMA_FLAGS = __HAL_DMA_GET_TC_FLAG_INDEX(&hdma_usart3_rx);	
 		__HAL_DMA_CLEAR_FLAG(&hdma_usart3_rx,DMA_FLAGS);
@@ -520,8 +521,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM2) {
+  if (htim->Instance == TIM2) 
+	{
     HAL_IncTick();
+  }else if(htim == (&htim6))
+	{
+		RefreshSysTime();
   }
   /* USER CODE BEGIN Callback 1 */
 
@@ -538,7 +543,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			case 0x206:                            //pitch轴电机反馈
 			{
 				
-//				RefreshDeviceOutLineTime(MotorP_NO);
+				RefreshDeviceOutLineTime(MotorP_NO);
 				
 				if(pit_get.msg_cnt++ <= 10)   //过滤掉初始接收的数据，防止初始接收数据出错
 				{
@@ -553,7 +558,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			case 0x201:
 			{
 				
-//				RefreshDeviceOutLineTime(MotorB_NO);
+				RefreshDeviceOutLineTime(MotorB_NO);
 				
 				if(moto_dial_get.msg_cnt++ <= 10)	
 				{
@@ -574,7 +579,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		{
 		  case 0x205:                            //yaw轴电机反馈
 			{
-//       RefreshDeviceOutLineTime(MotorY_NO);
+       RefreshDeviceOutLineTime(MotorY_NO);
 				
 				if(yaw_get.msg_cnt++ <= 10)
 				{
@@ -639,12 +644,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     {
         //wake up the task
         //唤醒任务
-        if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
-        {
+//        if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
+//        {
             static BaseType_t xHigherPriorityTaskWoken;
             vTaskNotifyGiveFromISR(imuTaskHandle, &xHigherPriorityTaskWoken);
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        }
+//        }
     }
 
 

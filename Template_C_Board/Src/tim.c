@@ -31,7 +31,7 @@ TIM_HandleTypeDef htim10;
 TIM_HandleTypeDef htim12;
 
 /* TIM1 init function */
-void MX_TIM1_Init(void)
+void MX_TIM1_Init(void)   //TIM1用于PWM波输出
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -131,7 +131,7 @@ void MX_TIM3_Init(void)
 
 }
 /* TIM6 init function */
-void MX_TIM6_Init(void)
+void MX_TIM6_Init(void)     //TIM5用于掉线检测时钟
 {
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 

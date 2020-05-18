@@ -66,3 +66,5 @@ template_c_board\main.o: .\Motor_driver\Motor_USE_TIM.h
 template_c_board\main.o: .\Motor_driver\Motor_USE_CAN.h
 template_c_board\main.o: .\Communication\communication.h
 template_c_board\main.o: .\Algorithm\pid.h
+template_c_board\main.o: .\Board_bsp\bsp_delay.h
+template_c_board\main.o: .\Algorithm\user_lib.h

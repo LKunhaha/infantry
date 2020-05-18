@@ -14,16 +14,16 @@
 #define MyFlagClear(x,y) x=x&~(0x00000001<<y)
 #define MyFlagGet(x,y) (x&(0x00000001<<y))
 
-typedef struct{
+typedef struct
+{
 	short Mode;//运行模式
 	short Enable;//状态
 	short State;//状态
 	short Task;//任务
-//	BEEPMode Beep;//蜂鸣器
 	int Time;//System run time mm
 	TIM_HandleTypeDef *htim;//时间计数器句柄
-	uint16_t OutLine_Flag;//断线标志
-	uint16_t task_OutLine_Flag;//断线标志	
+	uint16_t OutLine_Flag;       //断线标志
+	uint16_t task_OutLine_Flag;  //任务断线标志	
 //	RobotDistDef RobotDist;//机器人测量
 }SystemStateDef;
 
@@ -33,7 +33,7 @@ typedef enum
 		MotorY_NO,
 		MotorP_NO,
   	MotorB_NO,
-	  JY61_NO,
+	  Minipc_NO,
 	  WeiDong_NO,
   
 		DeviceTotal_No	
@@ -52,9 +52,6 @@ typedef enum
 }TASK_NoDEF;
 
 extern SystemStateDef SystemState;
-extern SystemStateDef Remote;
-extern SystemStateDef Gimbal_Motor;
-extern SystemStateDef JY61;
 
 int SystemState_Inite(void);//SystemState初始化
 void RefreshSysTime(void);//刷新系统时间（mm）

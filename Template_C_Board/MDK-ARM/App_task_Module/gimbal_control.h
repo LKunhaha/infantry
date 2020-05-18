@@ -12,7 +12,7 @@
 #include "decode.h"
 
 /* 本模块向外部提供的宏定义--------------------------------------------------*/	 
-#define GIMBAL_PERIOD 5
+#define GIMBAL_PERIOD 1
 #define Yaw_Middle_Angle 7462
 #define Pitch_Middle_Angle 7000
 /* 本模块向外部提供的数据类型定义--------------------------------------------*/

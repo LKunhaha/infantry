@@ -85,3 +85,6 @@ template_c_board\gimbal_control.o: .\Communication\decode.h
 template_c_board\gimbal_control.o: .\Algorithm\SystemState.h
 template_c_board\gimbal_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 template_c_board\gimbal_control.o: .\Algorithm\user_lib.h
+template_c_board\gimbal_control.o: App_task_Module\INS_task.h
+template_c_board\gimbal_control.o: .\Motor_driver\bmi088driver.h
+template_c_board\gimbal_control.o: .\Motor_driver\ist8310driver.h
